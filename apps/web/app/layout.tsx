@@ -46,9 +46,15 @@ function Shell({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`dark ${jetbrains.variable}`} suppressHydrationWarning>
       <head>
+        {/* Google Sans Display + Text (primary UI type). */}
         <link
           rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Google+Sans+Display:wght@400;500;700&family=Google+Sans+Text:wght@400;500;700&display=swap"
+        />
+        {/* Instrument Serif — used for pull quotes + editorial italics. */}
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&display=swap"
         />
       </head>
       <body className="bg-brand-bg text-brand-text font-sans antialiased">
