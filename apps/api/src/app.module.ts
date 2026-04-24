@@ -7,6 +7,7 @@ import { AppController } from './app.controller';
 import { envValidationSchema } from './config/env';
 import { AgentsModule } from './modules/agents/agents.module';
 import { ContentModule } from './modules/agents/content/content.module';
+import { LifeCoachModule } from './modules/agents/life-coach/life-coach.module';
 import { TradingModule } from './modules/agents/trading/trading.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { ChatModule } from './modules/chat/chat.module';
@@ -45,6 +46,7 @@ import { ToolsModule } from './shared/tools/tools.module';
     DocumentsModule,
     TradingModule,
     ContentModule,
+    LifeCoachModule,
   ],
   controllers: [AppController],
   providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],
