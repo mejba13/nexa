@@ -7,12 +7,14 @@ import helmet from 'helmet';
 
 import { AppModule } from './app.module';
 import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
+import { logIntegrationStatus } from './shared/observability/integration-status';
 import { initSentry } from './shared/observability/sentry';
 
 async function bootstrap() {
   initSentry();
   const app = await NestFactory.create(AppModule, { bufferLogs: true, rawBody: true });
   const logger = new Logger('Bootstrap');
+  logIntegrationStatus();
 
   app.setGlobalPrefix('api/v1');
   app.use(helmet());

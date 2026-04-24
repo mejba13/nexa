@@ -10,9 +10,8 @@ import {
   Req,
 } from '@nestjs/common';
 import { ApiBearerAuth, ApiExcludeEndpoint, ApiTags } from '@nestjs/swagger';
-import type { Request } from 'express';
-
 import type { Plan } from '@nexa/types';
+import type { Request } from 'express';
 
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
 import { Public } from '../../common/decorators/public.decorator';

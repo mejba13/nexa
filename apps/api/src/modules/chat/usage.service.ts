@@ -1,8 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
+import { PLAN_LIMITS } from '@nexa/types';
 import type { AgentType } from '@prisma/client';
 import { Decimal } from '@prisma/client/runtime/library';
-
-import { PLAN_LIMITS } from '@nexa/types';
 
 import { PrismaService } from '../../shared/prisma/prisma.service';
 

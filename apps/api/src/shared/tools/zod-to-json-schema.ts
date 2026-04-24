@@ -1,5 +1,5 @@
 import type Anthropic from '@anthropic-ai/sdk';
-import { z, type ZodSchema, type ZodTypeAny } from 'zod';
+import type { z, type ZodSchema, type ZodTypeAny } from 'zod';
 
 /**
  * Minimal Zod → JSON Schema converter, enough for Anthropic tool input_schema.

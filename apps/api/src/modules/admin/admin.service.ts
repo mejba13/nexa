@@ -1,7 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Decimal } from '@prisma/client/runtime/library';
-
 import type { AgentType } from '@nexa/types';
+import { Decimal } from '@prisma/client/runtime/library';
 
 import { PrismaService } from '../../shared/prisma/prisma.service';
 

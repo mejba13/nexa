@@ -5,10 +5,10 @@ import { Decimal } from '@prisma/client/runtime/library';
 import { PrismaService } from '../../../shared/prisma/prisma.service';
 import { R2StorageService } from '../../../shared/storage/r2.service';
 
-import { BacktestEngine } from './backtest/engine';
 import { parseOhlcvCsv } from './backtest/csv';
-import type { BacktestResult } from './backtest/types';
+import { BacktestEngine } from './backtest/engine';
 import { strategyRulesSchema, type StrategyRulesInput } from './backtest/schema';
+import type { BacktestResult } from './backtest/types';
 
 @Injectable()
 export class TradingService {

@@ -1,7 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import type { Agent, AgentType } from '@prisma/client';
-
 import { PLAN_LIMITS } from '@nexa/types';
+import type { Agent, AgentType } from '@prisma/client';
 
 import { PrismaService } from '../../shared/prisma/prisma.service';
 

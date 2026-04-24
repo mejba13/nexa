@@ -3,8 +3,6 @@ import { Module, OnModuleInit } from '@nestjs/common';
 import { ToolRegistry } from '../../../shared/tools/tool-registry.service';
 
 import { BacktestEngine } from './backtest/engine';
-import { TradingController } from './trading.controller';
-import { TradingService } from './trading.service';
 import {
   CompareStrategiesTool,
   GetPerformanceMetricsTool,
@@ -13,6 +11,8 @@ import {
   UploadMarketDataTool,
   UploadStrategyTool,
 } from './tools';
+import { TradingController } from './trading.controller';
+import { TradingService } from './trading.service';
 
 @Module({
   controllers: [TradingController],

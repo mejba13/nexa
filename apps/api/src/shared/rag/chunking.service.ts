@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { getEncoding, type Tiktoken } from 'js-tiktoken';
-
 import { CHUNK_OVERLAP_TOKENS, CHUNK_SIZE_TOKENS } from '@nexa/types';
+import { getEncoding, type Tiktoken } from 'js-tiktoken';
 
 export interface Chunk {
   index: number;

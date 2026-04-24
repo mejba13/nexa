@@ -11,9 +11,8 @@ import {
 } from '@nestjs/common';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { ApiBearerAuth, ApiConsumes, ApiTags } from '@nestjs/swagger';
-import type { AgentType } from '@prisma/client';
-
 import { MAX_FILE_SIZE_BYTES } from '@nexa/types';
+import type { AgentType } from '@prisma/client';
 
 import { CurrentUser } from '../../common/decorators/current-user.decorator';
 import type { AuthenticatedUser } from '../../common/guards/clerk-auth.guard';

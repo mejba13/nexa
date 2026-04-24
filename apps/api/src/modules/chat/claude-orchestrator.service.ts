@@ -1,11 +1,10 @@
 import type Anthropic from '@anthropic-ai/sdk';
 import { Injectable, Logger } from '@nestjs/common';
+import type { StreamEvent, ToolCall } from '@nexa/types';
 import type { AgentType } from '@prisma/client';
 import type { InputJsonValue } from '@prisma/client/runtime/library';
 import type { Observable } from 'rxjs';
 import { Subject } from 'rxjs';
-
-import type { StreamEvent, ToolCall } from '@nexa/types';
 
 import { ClaudeService } from '../../shared/claude/claude.service';
 import { MAX_TOOL_ITERATIONS } from '../../shared/claude/types';

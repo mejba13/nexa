@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { z } from 'zod';
-
 import type { AgentType } from '@nexa/types';
+import { z } from 'zod';
 
 import type { ITool, ToolContext } from '../../../../shared/tools/tool.interface';
 import type { BacktestResult } from '../backtest/types';

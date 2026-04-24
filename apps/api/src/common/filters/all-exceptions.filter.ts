@@ -7,6 +7,7 @@ import {
   Logger,
 } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
+import * as Sentry from '@sentry/node';
 import type { Request, Response } from 'express';
 import { ZodError } from 'zod';
 
@@ -34,6 +35,15 @@ export class AllExceptionsFilter implements ExceptionFilter {
         `[${body.statusCode}] ${req.method} ${req.url} — ${JSON.stringify(body.message)}`,
         exception instanceof Error ? exception.stack : undefined,
       );
+      // Forward to Sentry only if it was initialised (initSentry no-ops without DSN).
+      if (Sentry.getClient()) {
+        Sentry.withScope((scope) => {
+          scope.setTag('http.method', req.method);
+          scope.setTag('http.path', req.url);
+          scope.setLevel('error');
+          Sentry.captureException(exception);
+        });
+      }
     }
 
     res.status(body.statusCode).json(body);
@@ -48,7 +58,10 @@ export class AllExceptionsFilter implements ExceptionFilter {
       return {
         statusCode: status,
         error: HttpStatus[status] ?? 'Error',
-        message: typeof response === 'string' ? response : ((response as { message?: string | string[] }).message ?? exception.message),
+        message:
+          typeof response === 'string'
+            ? response
+            : ((response as { message?: string | string[] }).message ?? exception.message),
         path,
         timestamp,
       };

@@ -1,8 +1,7 @@
 import { Injectable, Logger, ServiceUnavailableException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import Stripe from 'stripe';
-
 import type { Plan } from '@nexa/types';
+import Stripe from 'stripe';
 
 import type { Env } from '../../config/env';
 

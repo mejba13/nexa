@@ -1,7 +1,6 @@
 import { BadRequestException, Injectable, Logger, NotFoundException } from '@nestjs/common';
-import type Stripe from 'stripe';
-
 import { PLAN_LIMITS, type Plan } from '@nexa/types';
+import type Stripe from 'stripe';
 
 import { PrismaService } from '../../shared/prisma/prisma.service';
 import { UsageService } from '../chat/usage.service';

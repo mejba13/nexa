@@ -8,15 +8,14 @@ import {
   NotFoundException,
   PayloadTooLargeException,
 } from '@nestjs/common';
-import type { AgentType } from '@prisma/client';
-import type { Queue } from 'bullmq';
-
 import {
   MAX_FILE_SIZE_BYTES,
   PLAN_LIMITS,
   SUPPORTED_MIME_TYPES,
   type SupportedMimeType,
 } from '@nexa/types';
+import type { AgentType } from '@prisma/client';
+import type { Queue } from 'bullmq';
 
 import { PrismaService } from '../../shared/prisma/prisma.service';
 import { R2StorageService } from '../../shared/storage/r2.service';
