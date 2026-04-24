@@ -59,20 +59,20 @@ The web app boots at `http://localhost:3000` and the API at `http://localhost:30
 
 ### Common Scripts
 
-| Command                  | What it does                                 |
-| ------------------------ | -------------------------------------------- |
-| `pnpm dev`               | Run web + api concurrently via Turbo         |
-| `pnpm --filter web dev`  | Run only the Next.js app                     |
-| `pnpm --filter api dev`  | Run only the NestJS api                      |
-| `pnpm build`             | Build every workspace                        |
-| `pnpm lint`              | ESLint across all packages                   |
-| `pnpm typecheck`         | TypeScript `--noEmit` across all packages    |
-| `pnpm test`              | Vitest unit tests                            |
-| `pnpm test:e2e`          | Playwright end-to-end tests                  |
-| `pnpm format`            | Prettier write                               |
-| `pnpm db:up` / `db:down` | Start/stop local Postgres+pgvector+Redis     |
-| `pnpm db:migrate`        | `prisma migrate dev`                         |
-| `pnpm db:seed`           | Seed default agents                          |
+| Command                  | What it does                              |
+| ------------------------ | ----------------------------------------- |
+| `pnpm dev`               | Run web + api concurrently via Turbo      |
+| `pnpm --filter web dev`  | Run only the Next.js app                  |
+| `pnpm --filter api dev`  | Run only the NestJS api                   |
+| `pnpm build`             | Build every workspace                     |
+| `pnpm lint`              | ESLint across all packages                |
+| `pnpm typecheck`         | TypeScript `--noEmit` across all packages |
+| `pnpm test`              | Vitest unit tests                         |
+| `pnpm test:e2e`          | Playwright end-to-end tests               |
+| `pnpm format`            | Prettier write                            |
+| `pnpm db:up` / `db:down` | Start/stop local Postgres+pgvector+Redis  |
+| `pnpm db:migrate`        | `prisma migrate dev`                      |
+| `pnpm db:seed`           | Seed default agents                       |
 
 ---
 
@@ -127,13 +127,13 @@ Never commit a real `.env`. Production secrets live in Vercel (web) and Railway 
 
 ## Roadmap
 
-| Phase | Weeks   | Deliverable                                             |
-| ----- | ------- | ------------------------------------------------------- |
-| 1     | 1–2     | Monorepo + auth + skeleton (current)                    |
-| 2     | 3–4     | Claude orchestrator + SSE + RAG + file upload           |
-| 3     | 5–9     | Four agents (Trading → Content → Life Coach → Music)    |
-| 4     | 10–12   | Billing, admin, observability, perf + security hardening |
-| 5     | 13–14   | Private beta → public launch                            |
+| Phase | Weeks | Deliverable                                              |
+| ----- | ----- | -------------------------------------------------------- |
+| 1     | 1–2   | Monorepo + auth + skeleton (current)                     |
+| 2     | 3–4   | Claude orchestrator + SSE + RAG + file upload            |
+| 3     | 5–9   | Four agents (Trading → Content → Life Coach → Music)     |
+| 4     | 10–12 | Billing, admin, observability, perf + security hardening |
+| 5     | 13–14 | Private beta → public launch                             |
 
 Detailed breakdown: PRD §15.
 

@@ -20,8 +20,7 @@ const AGENTS: AgentSeed[] = [
   {
     type: 'TRADING',
     name: 'Trading Analyst',
-    description:
-      'Autonomous quant partner for trading strategy analysis and backtesting.',
+    description: 'Autonomous quant partner for trading strategy analysis and backtesting.',
     systemPrompt:
       'You are the Nexa Trading Analyst. NEVER fabricate performance numbers — always call the run_backtest and get_performance_metrics tools. Explain results in plain language and propose concrete improvements.',
     tools: [
@@ -72,7 +71,7 @@ const AGENTS: AgentSeed[] = [
     name: 'Life Coach',
     description: 'Personality-aware coach trained on user journals and personal data.',
     systemPrompt:
-      'You are the Nexa Life Coach. Ground every reflection in the user\'s journals via query_past_reflections. Be warm, specific, and non-judgmental.',
+      "You are the Nexa Life Coach. Ground every reflection in the user's journals via query_past_reflections. Be warm, specific, and non-judgmental.",
     tools: [
       { name: 'ingest_journal', description: 'Parse, chunk, and embed journal entries' },
       { name: 'query_past_reflections', description: 'RAG over journal corpus' },

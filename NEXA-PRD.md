@@ -20,6 +20,7 @@ This PRD is structured for autonomous implementation. Each feature has:
 - **Dependencies** — other features or systems required
 
 **For Claude Code / Cursor:**
+
 ```
 Read NEXA-PRD.md. Implement features in order: F-001 → F-009 → agent-specific features.
 Follow the exact tech stack in Section 7. Use the database schema in Section 8.
@@ -57,18 +58,23 @@ Create the project structure defined in Section 14.
 ## 1. Executive Summary
 
 ### Product Name
+
 **Nexa**
 
 ### One-Line Description
+
 A multi-agent AI platform powered by Claude where four specialized autonomous agents (Trading, Music, Content, Life Coach) operate in a unified workspace with isolated memory, custom tools, and real-time streaming.
 
 ### Vision
+
 To become the operating system for specialized AI agents — consolidating fragmented AI tools into one authenticated, intelligent platform.
 
 ### Mission
+
 Empower users with an entire AI team in one place — each agent purpose-built for its domain, fully autonomous, and aware of the user's personal context.
 
 ### Core Value Proposition
+
 - ✅ Four specialized Claude agents in one workspace
 - ✅ Isolated knowledge bases per agent (privacy by design)
 - ✅ Autonomous tool use & multi-step reasoning
@@ -129,21 +135,25 @@ Nexa consolidates four domain-specialized Claude agents into a single authentica
 ## 4. User Personas
 
 ### Persona 1: The Multi-Domain Creator
+
 - **Name:** Alex, 32, Independent Creator
 - **Needs:** Manages trading portfolio, produces music, and creates content — tired of switching between 8 different AI tools
 - **Goal:** One subscription, one login, all AI workflows
 
 ### Persona 2: The Quant Enthusiast
+
 - **Name:** Priya, 28, Retail Trader
 - **Needs:** Wants to backtest strategies without learning Python or paying for Bloomberg
 - **Goal:** Upload a strategy, get performance metrics, iterate quickly
 
 ### Persona 3: The Self-Reflective Founder
+
 - **Name:** Marcus, 40, Startup CEO
 - **Needs:** Years of journals he wants to transform into a personal coaching system
 - **Goal:** An AI that understands his personality and offers contextual advice
 
 ### Persona 4: The Growth Marketer
+
 - **Name:** Sofia, 29, Brand Manager
 - **Needs:** Consistent brand voice across 50+ posts/month
 - **Goal:** A content agent trained on her brand guidelines that produces publish-ready copy
@@ -157,6 +167,7 @@ Nexa consolidates four domain-specialized Claude agents into a single authentica
 **Purpose:** Autonomous quant partner for trading strategy analysis and backtesting.
 
 **Core Capabilities:**
+
 - Ingest trading strategies (text descriptions or structured rules)
 - Upload historical market data (CSV, OHLCV format)
 - Store strategies and data in isolated agent database
@@ -165,18 +176,20 @@ Nexa consolidates four domain-specialized Claude agents into a single authentica
 - Analyze results and suggest strategy improvements
 
 **Required Tools:**
+
 ```typescript
 tools: [
-  "upload_strategy",       // Store strategy definition
-  "upload_market_data",    // Store historical OHLCV data
-  "run_backtest",          // Execute backtest with strategy + data
-  "get_performance_metrics", // Compute P/L, win rate, drawdown
-  "compare_strategies",    // A/B compare two strategies
-  "suggest_improvements"   // Analyze results, propose changes
-]
+  'upload_strategy', // Store strategy definition
+  'upload_market_data', // Store historical OHLCV data
+  'run_backtest', // Execute backtest with strategy + data
+  'get_performance_metrics', // Compute P/L, win rate, drawdown
+  'compare_strategies', // A/B compare two strategies
+  'suggest_improvements', // Analyze results, propose changes
+];
 ```
 
 **Tech Requirements:**
+
 - Backtesting engine: Custom Node.js implementation OR Python microservice (FastAPI)
 - Data source: Initially CSV uploads; Phase 2 → Alpha Vantage / Polygon.io API
 - Chart library: Recharts for visualizations in frontend
@@ -189,6 +202,7 @@ tools: [
 **Purpose:** Creative collaborator for music creation, production, and mixing guidance.
 
 **Core Capabilities:**
+
 - Find music references based on style/mood
 - Suggest sounds, instruments, beats, arrangements
 - Provide mixing and mastering guidance
@@ -196,18 +210,20 @@ tools: [
 - Assist with lyrics, hooks, and song structure
 
 **Required Tools:**
+
 ```typescript
 tools: [
-  "search_references",     // Spotify API for similar tracks
-  "suggest_instruments",   // Rule-based + Claude reasoning
-  "suggest_arrangement",   // Structural templates
-  "generate_lyrics",       // Claude-only (no tool)
-  "find_samples",          // Freesound.org API
-  "mixing_guidance"        // Knowledge base queries
-]
+  'search_references', // Spotify API for similar tracks
+  'suggest_instruments', // Rule-based + Claude reasoning
+  'suggest_arrangement', // Structural templates
+  'generate_lyrics', // Claude-only (no tool)
+  'find_samples', // Freesound.org API
+  'mixing_guidance', // Knowledge base queries
+];
 ```
 
 **Tech Requirements:**
+
 - External APIs: Spotify Web API, Freesound.org API
 - Audio playback: Web Audio API in frontend
 - Waveform viz: Wavesurfer.js (Phase 2)
@@ -219,6 +235,7 @@ tools: [
 **Purpose:** Brand-voice-trained content agent for social, video, blog, and marketing content.
 
 **Core Capabilities:**
+
 - Generate social media posts (Twitter, LinkedIn, Instagram)
 - Write video scripts and Reels/Shorts ideas
 - Create captions, hooks, and CTAs
@@ -227,18 +244,20 @@ tools: [
 - Maintain brand-specific voice from uploaded docs
 
 **Required Tools:**
+
 ```typescript
 tools: [
-  "query_brand_voice",     // RAG over brand guideline docs
-  "generate_social_post",  // Platform-specific formatting
-  "generate_blog_post",    // Long-form with SEO structure
-  "generate_video_script", // Hook + body + CTA
-  "create_content_calendar", // Multi-week planning
-  "research_trends"        // Web search integration (Phase 2)
-]
+  'query_brand_voice', // RAG over brand guideline docs
+  'generate_social_post', // Platform-specific formatting
+  'generate_blog_post', // Long-form with SEO structure
+  'generate_video_script', // Hook + body + CTA
+  'create_content_calendar', // Multi-week planning
+  'research_trends', // Web search integration (Phase 2)
+];
 ```
 
 **Tech Requirements:**
+
 - RAG: pgvector with OpenAI embeddings (`text-embedding-3-small`)
 - Brand voice training: Users upload brand docs, style guides
 - Stock images: Unsplash API integration (Phase 2)
@@ -250,6 +269,7 @@ tools: [
 **Purpose:** Personality-aware coach trained on user journals and personal data.
 
 **Core Capabilities:**
+
 - Ingest uploaded journal entries (PDF, DOCX, TXT, MD)
 - Understand user's mindset, personality, and recurring themes
 - Generate reflections based on personal data
@@ -258,18 +278,20 @@ tools: [
 - Maintain consistent coaching style
 
 **Required Tools:**
+
 ```typescript
 tools: [
-  "ingest_journal",        // Parse, chunk, embed journal entries
-  "query_past_reflections", // RAG over journal corpus
-  "extract_themes",        // Identify patterns in journals
-  "generate_reflection",   // Personalized response
-  "mood_tracker",          // Optional: log daily mood (Phase 2)
-  "decision_framework"     // Structured decision-making tool
-]
+  'ingest_journal', // Parse, chunk, embed journal entries
+  'query_past_reflections', // RAG over journal corpus
+  'extract_themes', // Identify patterns in journals
+  'generate_reflection', // Personalized response
+  'mood_tracker', // Optional: log daily mood (Phase 2)
+  'decision_framework', // Structured decision-making tool
+];
 ```
 
 **Tech Requirements:**
+
 - Document parsing: `pdf-parse`, `mammoth.js` (DOCX), native Node for TXT/MD
 - Chunking strategy: 512-token chunks with 64-token overlap
 - Embeddings: OpenAI `text-embedding-3-small` (cost-effective for large corpora)
@@ -356,79 +378,79 @@ User Message
 
 ### Frontend
 
-| Package | Version | Purpose |
-|---------|---------|---------|
-| `next` | ^14.2.0 | React framework (App Router) |
-| `react` | ^18.3.0 | UI library |
-| `typescript` | ^5.4.0 | Type safety |
-| `tailwindcss` | ^3.4.0 | Utility CSS |
-| `@shadcn/ui` | latest | Component library |
-| `@tanstack/react-query` | ^5.0.0 | Server state |
-| `zustand` | ^4.5.0 | Client state |
-| `react-hook-form` | ^7.51.0 | Forms |
-| `zod` | ^3.22.0 | Schema validation |
-| `lucide-react` | ^0.370.0 | Icons |
-| `framer-motion` | ^11.0.0 | Animations |
-| `ai` | ^3.0.0 | Vercel AI SDK (streaming) |
-| `@clerk/nextjs` | ^5.0.0 | Auth SDK |
-| `recharts` | ^2.12.0 | Charts (trading agent) |
+| Package                 | Version  | Purpose                      |
+| ----------------------- | -------- | ---------------------------- |
+| `next`                  | ^14.2.0  | React framework (App Router) |
+| `react`                 | ^18.3.0  | UI library                   |
+| `typescript`            | ^5.4.0   | Type safety                  |
+| `tailwindcss`           | ^3.4.0   | Utility CSS                  |
+| `@shadcn/ui`            | latest   | Component library            |
+| `@tanstack/react-query` | ^5.0.0   | Server state                 |
+| `zustand`               | ^4.5.0   | Client state                 |
+| `react-hook-form`       | ^7.51.0  | Forms                        |
+| `zod`                   | ^3.22.0  | Schema validation            |
+| `lucide-react`          | ^0.370.0 | Icons                        |
+| `framer-motion`         | ^11.0.0  | Animations                   |
+| `ai`                    | ^3.0.0   | Vercel AI SDK (streaming)    |
+| `@clerk/nextjs`         | ^5.0.0   | Auth SDK                     |
+| `recharts`              | ^2.12.0  | Charts (trading agent)       |
 
 ### Backend
 
-| Package | Version | Purpose |
-|---------|---------|---------|
-| `@nestjs/core` | ^10.3.0 | Backend framework |
-| `@nestjs/common` | ^10.3.0 | Core decorators |
-| `@nestjs/config` | ^3.2.0 | Environment config |
-| `@nestjs/passport` | ^10.0.0 | Auth integration |
-| `@nestjs/jwt` | ^10.2.0 | JWT handling |
-| `@nestjs/swagger` | ^7.3.0 | API docs |
-| `@nestjs/bull` | ^10.1.0 | Queue integration |
-| `@nestjs/throttler` | ^5.1.0 | Rate limiting |
-| `prisma` | ^5.12.0 | ORM |
-| `@prisma/client` | ^5.12.0 | Prisma runtime |
-| `class-validator` | ^0.14.0 | DTO validation |
-| `class-transformer` | ^0.5.0 | Object mapping |
-| `bullmq` | ^5.4.0 | Job queue |
-| `ioredis` | ^5.3.0 | Redis client |
-| `@anthropic-ai/sdk` | ^0.20.0 | Claude API |
-| `openai` | ^4.30.0 | Embeddings only |
-| `multer` | ^1.4.5 | File uploads |
-| `pdf-parse` | ^1.1.1 | PDF extraction |
-| `mammoth` | ^1.7.0 | DOCX extraction |
-| `sharp` | ^0.33.0 | Image processing |
-| `stripe` | ^14.20.0 | Billing |
-| `helmet` | ^7.1.0 | Security headers |
+| Package             | Version  | Purpose            |
+| ------------------- | -------- | ------------------ |
+| `@nestjs/core`      | ^10.3.0  | Backend framework  |
+| `@nestjs/common`    | ^10.3.0  | Core decorators    |
+| `@nestjs/config`    | ^3.2.0   | Environment config |
+| `@nestjs/passport`  | ^10.0.0  | Auth integration   |
+| `@nestjs/jwt`       | ^10.2.0  | JWT handling       |
+| `@nestjs/swagger`   | ^7.3.0   | API docs           |
+| `@nestjs/bull`      | ^10.1.0  | Queue integration  |
+| `@nestjs/throttler` | ^5.1.0   | Rate limiting      |
+| `prisma`            | ^5.12.0  | ORM                |
+| `@prisma/client`    | ^5.12.0  | Prisma runtime     |
+| `class-validator`   | ^0.14.0  | DTO validation     |
+| `class-transformer` | ^0.5.0   | Object mapping     |
+| `bullmq`            | ^5.4.0   | Job queue          |
+| `ioredis`           | ^5.3.0   | Redis client       |
+| `@anthropic-ai/sdk` | ^0.20.0  | Claude API         |
+| `openai`            | ^4.30.0  | Embeddings only    |
+| `multer`            | ^1.4.5   | File uploads       |
+| `pdf-parse`         | ^1.1.1   | PDF extraction     |
+| `mammoth`           | ^1.7.0   | DOCX extraction    |
+| `sharp`             | ^0.33.0  | Image processing   |
+| `stripe`            | ^14.20.0 | Billing            |
+| `helmet`            | ^7.1.0   | Security headers   |
 
 ### Infrastructure
 
-| Service | Purpose |
-|---------|---------|
-| **PostgreSQL 16** | Primary database (with pgvector extension) |
-| **Redis 7** | Cache + queue backing store |
-| **Cloudflare R2** | File storage (S3-compatible, no egress) |
-| **Vercel** | Frontend deployment |
-| **Railway** | Backend deployment |
-| **Supabase** or **Neon** | Managed Postgres with pgvector |
-| **Upstash Redis** | Managed Redis |
-| **Clerk** | Authentication provider |
-| **Stripe** | Payments & subscriptions |
-| **Langfuse** | LLM observability |
-| **Sentry** | Error tracking |
-| **PostHog** | Product analytics |
+| Service                  | Purpose                                    |
+| ------------------------ | ------------------------------------------ |
+| **PostgreSQL 16**        | Primary database (with pgvector extension) |
+| **Redis 7**              | Cache + queue backing store                |
+| **Cloudflare R2**        | File storage (S3-compatible, no egress)    |
+| **Vercel**               | Frontend deployment                        |
+| **Railway**              | Backend deployment                         |
+| **Supabase** or **Neon** | Managed Postgres with pgvector             |
+| **Upstash Redis**        | Managed Redis                              |
+| **Clerk**                | Authentication provider                    |
+| **Stripe**               | Payments & subscriptions                   |
+| **Langfuse**             | LLM observability                          |
+| **Sentry**               | Error tracking                             |
+| **PostHog**              | Product analytics                          |
 
 ### DevOps
 
-| Tool | Purpose |
-|------|---------|
-| **Turborepo** | Monorepo build orchestration |
-| **pnpm** | Package manager (workspaces) |
-| **Docker** | Containerization |
-| **GitHub Actions** | CI/CD |
-| **ESLint + Prettier** | Code quality |
-| **Husky + lint-staged** | Pre-commit hooks |
-| **Vitest** | Unit testing |
-| **Playwright** | E2E testing |
+| Tool                    | Purpose                      |
+| ----------------------- | ---------------------------- |
+| **Turborepo**           | Monorepo build orchestration |
+| **pnpm**                | Package manager (workspaces) |
+| **Docker**              | Containerization             |
+| **GitHub Actions**      | CI/CD                        |
+| **ESLint + Prettier**   | Code quality                 |
+| **Husky + lint-staged** | Pre-commit hooks             |
+| **Vitest**              | Unit testing                 |
+| **Playwright**          | E2E testing                  |
 
 ---
 
@@ -668,15 +690,18 @@ CREATE POLICY "users_own_documents" ON "Document"
 ## 9. API Specifications
 
 ### Base URL
+
 - **Development:** `http://localhost:3001/api/v1`
 - **Production:** `https://api.nexa.ai/v1`
 
 ### Authentication
+
 All protected routes require: `Authorization: Bearer <CLERK_JWT>`
 
 ### Endpoints
 
 #### 🔐 Auth Routes
+
 ```
 POST   /auth/sync              Sync Clerk user to DB after signup
 GET    /auth/me                Get current user profile
@@ -685,6 +710,7 @@ DELETE /auth/me                Delete account + all data
 ```
 
 #### 🤖 Agent Routes
+
 ```
 GET    /agents                 List all available agents
 GET    /agents/:type           Get specific agent config
@@ -692,6 +718,7 @@ GET    /agents/:type/status    Check if user has access to agent
 ```
 
 #### 💬 Conversation Routes
+
 ```
 GET    /conversations                       List user's conversations (filter by agent)
 POST   /conversations                       Create new conversation
@@ -703,6 +730,7 @@ GET    /conversations/:id/export            Export as Markdown
 ```
 
 #### 📄 Document Routes
+
 ```
 GET    /documents                    List user's documents (filter by agent)
 POST   /documents/upload             Upload file (multipart/form-data)
@@ -712,6 +740,7 @@ POST   /documents/:id/reindex        Reprocess embeddings
 ```
 
 #### 📊 Trading Agent Routes
+
 ```
 GET    /trading/strategies                  List user's strategies
 POST   /trading/strategies                  Create strategy
@@ -723,6 +752,7 @@ GET    /trading/backtests/:id/status        Check backtest job status
 ```
 
 #### 💳 Billing Routes
+
 ```
 GET    /billing/plans                Get available plans
 POST   /billing/checkout             Create Stripe checkout session
@@ -732,6 +762,7 @@ POST   /billing/webhook              Stripe webhook handler
 ```
 
 #### 📈 Admin Routes (require admin role)
+
 ```
 GET    /admin/users                  List all users (paginated)
 GET    /admin/users/:id              Get user details + usage
@@ -742,6 +773,7 @@ GET    /admin/agents/usage           Agent usage analytics
 ### Example: Send Message (SSE Stream)
 
 **Request:**
+
 ```http
 POST /api/v1/conversations/conv_abc123/messages
 Content-Type: application/json
@@ -754,6 +786,7 @@ Authorization: Bearer <token>
 ```
 
 **Response (SSE Stream):**
+
 ```
 event: message_start
 data: {"messageId":"msg_xyz"}
@@ -787,6 +820,7 @@ data: {"tokensInput":1234,"tokensOutput":567}
 **Description:** Secure user authentication via Clerk with email/password, Google, and GitHub SSO.
 
 **Acceptance Criteria:**
+
 - [ ] Users can sign up with email + password
 - [ ] Users can sign in with Google OAuth
 - [ ] Users can sign in with GitHub OAuth
@@ -797,6 +831,7 @@ data: {"tokensInput":1234,"tokensOutput":567}
 - [ ] Sign-out invalidates session
 
 **Technical Directives:**
+
 - Use `@clerk/nextjs` middleware
 - Webhook endpoint for `user.created`, `user.updated`, `user.deleted`
 - Never store passwords — Clerk handles all auth
@@ -812,6 +847,7 @@ data: {"tokensInput":1234,"tokensOutput":567}
 **Description:** Admin-only dashboard showing platform-wide metrics.
 
 **Acceptance Criteria:**
+
 - [ ] Admin role check via Clerk metadata
 - [ ] View all users with pagination and search
 - [ ] View user details: plan, usage, conversations count
@@ -831,6 +867,7 @@ data: {"tokensInput":1234,"tokensOutput":567}
 **Description:** Each agent has a dedicated UI with isolated chat history, file library, and settings.
 
 **Acceptance Criteria:**
+
 - [ ] Left sidebar with 4 agent tabs (Trading, Music, Content, Life Coach)
 - [ ] Selecting an agent shows only that agent's conversations
 - [ ] Each agent has independent file library
@@ -850,6 +887,7 @@ data: {"tokensInput":1234,"tokensOutput":567}
 **Description:** Users upload files which are parsed, chunked, embedded, and indexed per agent.
 
 **Acceptance Criteria:**
+
 - [ ] Supported formats: PDF, DOCX, TXT, MD, CSV
 - [ ] Max file size: 50 MB per file
 - [ ] Max files per user: 100 (free), unlimited (paid)
@@ -862,6 +900,7 @@ data: {"tokensInput":1234,"tokensOutput":567}
 - [ ] Users can delete files (cascade deletes chunks)
 
 **Technical Directives:**
+
 - Use `@nestjs/bull` queue: `file-processing`
 - Store R2 keys as: `users/{userId}/agents/{agentType}/{fileId}.{ext}`
 - Compute embeddings in parallel with batch size 20
@@ -878,6 +917,7 @@ data: {"tokensInput":1234,"tokensOutput":567}
 **Description:** Real-time streaming chat with tool-use visualization.
 
 **Acceptance Criteria:**
+
 - [ ] Messages stream token-by-token via SSE
 - [ ] Tool calls visualized inline (expandable cards)
 - [ ] Tool results displayed cleanly
@@ -890,6 +930,7 @@ data: {"tokensInput":1234,"tokensOutput":567}
 - [ ] Error states for failed messages
 
 **Technical Directives:**
+
 - Use Vercel AI SDK `useChat()` hook on frontend
 - NestJS endpoint returns `Observable<MessageEvent>` for SSE
 - Implement agent loop: think → tool_use → observe → repeat
@@ -907,6 +948,7 @@ data: {"tokensInput":1234,"tokensOutput":567}
 **Description:** Persistent conversation storage with search, star, archive, export.
 
 **Acceptance Criteria:**
+
 - [ ] All conversations auto-saved to DB
 - [ ] Users can rename conversations
 - [ ] Users can star conversations
@@ -927,6 +969,7 @@ data: {"tokensInput":1234,"tokensOutput":567}
 **Description:** Each agent has custom tools implemented as NestJS services.
 
 **Acceptance Criteria:**
+
 - [ ] Trading: backtester, metrics calculator, strategy comparator
 - [ ] Music: reference search (Spotify), sample search (Freesound)
 - [ ] Content: brand voice RAG, content calendar generator
@@ -937,6 +980,7 @@ data: {"tokensInput":1234,"tokensOutput":567}
 - [ ] Errors gracefully handled and returned to Claude
 
 **Technical Directives:**
+
 - Create `ToolRegistry` service in NestJS
 - Each tool implements `ITool` interface:
   ```typescript
@@ -959,6 +1003,7 @@ data: {"tokensInput":1234,"tokensOutput":567}
 **Description:** UI for users to view, edit, delete documents in their agent knowledge bases.
 
 **Acceptance Criteria:**
+
 - [ ] List all documents per agent
 - [ ] Preview document content
 - [ ] Delete individual documents
@@ -978,6 +1023,7 @@ data: {"tokensInput":1234,"tokensOutput":567}
 **Description:** Token metering, Stripe subscription billing, tier enforcement.
 
 **Acceptance Criteria:**
+
 - [ ] Pricing tiers defined:
   - **Free:** 100k tokens/month, 1 agent, 10 files
   - **Starter ($19/mo):** 1M tokens, 2 agents, 50 files
@@ -1037,34 +1083,40 @@ data: {"tokensInput":1234,"tokensOutput":567}
 ## 12. Security Requirements
 
 ### Authentication & Authorization
+
 - All API routes (except public) require Clerk JWT
 - JWTs validated on every request via NestJS guard
 - Admin routes check `publicMetadata.role === 'admin'`
 
 ### Data Isolation
+
 - PostgreSQL RLS on all user-owned tables
 - R2 storage keys scoped by user ID
 - pgvector queries filtered by `user_id` AND `agent_type`
 - **NEVER** allow cross-user data leakage
 
 ### Input Validation
+
 - All DTOs use `class-validator`
 - File uploads: MIME type whitelist, size limits
 - SQL injection prevention via Prisma parameterized queries
 - XSS prevention: sanitize user content with DOMPurify
 
 ### Rate Limiting
+
 - Global: 100 req/min per IP
 - Per-user: 60 req/min
 - Per-endpoint overrides for expensive operations
 - Use `@nestjs/throttler`
 
 ### Secrets Management
+
 - All secrets in `.env` (never committed)
 - Production secrets in Vercel/Railway environment variables
 - Rotate Claude API keys quarterly
 
 ### Compliance
+
 - GDPR: Users can export & delete all data (F-001 DELETE /auth/me)
 - Data retention: Deleted accounts purged after 30 days
 - Privacy policy + ToS displayed on signup
@@ -1073,17 +1125,17 @@ data: {"tokensInput":1234,"tokensOutput":567}
 
 ## 13. Performance Requirements
 
-| Metric | Target | Measurement |
-|--------|--------|-------------|
-| First-token latency | < 2s | P95 |
-| API response time (non-LLM) | < 200ms | P95 |
-| Page load (LCP) | < 2.5s | Lighthouse |
-| Time to Interactive | < 3.5s | Lighthouse |
-| Uptime SLA | 99.9% | Monthly |
-| Database query time | < 100ms | P95 |
-| File upload processing | < 30s for 10MB | Average |
-| Vector search | < 200ms | P95 |
-| Concurrent users | 1000+ | Load test |
+| Metric                      | Target         | Measurement |
+| --------------------------- | -------------- | ----------- |
+| First-token latency         | < 2s           | P95         |
+| API response time (non-LLM) | < 200ms        | P95         |
+| Page load (LCP)             | < 2.5s         | Lighthouse  |
+| Time to Interactive         | < 3.5s         | Lighthouse  |
+| Uptime SLA                  | 99.9%          | Monthly     |
+| Database query time         | < 100ms        | P95         |
+| File upload processing      | < 30s for 10MB | Average     |
+| Vector search               | < 200ms        | P95         |
+| Concurrent users            | 1000+          | Load test   |
 
 ---
 
@@ -1283,6 +1335,7 @@ NODE_ENV="development"
 ## 15. Development Roadmap
 
 ### Phase 1: Foundation (Weeks 1–2)
+
 - [ ] Initialize Turborepo monorepo
 - [ ] Scaffold Next.js 14 web app with Tailwind + shadcn
 - [ ] Scaffold NestJS API with Prisma
@@ -1297,6 +1350,7 @@ NODE_ENV="development"
 ---
 
 ### Phase 2: Agent Core (Weeks 3–4)
+
 - [ ] Build Claude orchestration service (NestJS)
 - [ ] Implement agent loop with Claude Agent SDK
 - [ ] Build SSE streaming infrastructure
@@ -1312,30 +1366,35 @@ NODE_ENV="development"
 ### Phase 3: The Four Agents (Weeks 5–9)
 
 **Week 5 — Trading Agent:**
+
 - [ ] Build backtesting engine
 - [ ] Implement trading tools
 - [ ] Design trading dashboard UI
 - [ ] Integrate Recharts for performance viz
 
 **Week 6 — Content Agent:**
+
 - [ ] Implement brand voice RAG
 - [ ] Build content generation tools
 - [ ] Design content dashboard UI
 - [ ] Add content calendar component
 
 **Week 7 — Life Coach Agent:**
+
 - [ ] Implement journal parsing (PDF, DOCX, TXT, MD)
 - [ ] Build journal RAG with theme extraction
 - [ ] Design coach dashboard UI
 - [ ] Add reflection history view
 
 **Week 8 — Music Agent:**
+
 - [ ] Integrate Spotify API
 - [ ] Integrate Freesound.org API
 - [ ] Build music suggestion tools
 - [ ] Design music dashboard UI
 
 **Week 9 — Integration & Polish:**
+
 - [ ] Unified agent switcher
 - [ ] Cross-agent conversation history
 - [ ] Performance optimization
@@ -1346,6 +1405,7 @@ NODE_ENV="development"
 ---
 
 ### Phase 4: Production Polish (Weeks 10–12)
+
 - [ ] Build admin dashboard
 - [ ] Integrate Stripe billing + webhooks
 - [ ] Implement usage tracking + limits
@@ -1361,6 +1421,7 @@ NODE_ENV="development"
 ---
 
 ### Phase 5: Launch (Weeks 13–14)
+
 - [ ] Private beta with 10 users
 - [ ] Feedback iteration cycle
 - [ ] Marketing site finalization
@@ -1375,22 +1436,26 @@ NODE_ENV="development"
 ## 16. Testing Strategy
 
 ### Unit Tests (Vitest)
+
 - **Coverage target:** 80%
 - Test all services in isolation
 - Mock external APIs (Claude, Stripe, R2)
 - Test tool execution logic
 
 ### Integration Tests
+
 - Test full API endpoints with test DB
 - Test Prisma queries
 - Test authentication flow
 
 ### E2E Tests (Playwright)
+
 - User signup → agent interaction flow
 - File upload → RAG query flow
 - Billing upgrade flow
 
 ### Load Tests (k6)
+
 - 1000 concurrent users
 - 100 simultaneous streaming chats
 - Measure first-token latency under load
@@ -1401,21 +1466,23 @@ NODE_ENV="development"
 
 ### Environments
 
-| Environment | Frontend | Backend | Database |
-|-------------|----------|---------|----------|
-| **Local** | localhost:3000 | localhost:3001 | Docker Postgres |
-| **Staging** | staging.nexa.ai | api-staging.nexa.ai | Neon branch |
-| **Production** | nexa.ai | api.nexa.ai | Neon main |
+| Environment    | Frontend        | Backend             | Database        |
+| -------------- | --------------- | ------------------- | --------------- |
+| **Local**      | localhost:3000  | localhost:3001      | Docker Postgres |
+| **Staging**    | staging.nexa.ai | api-staging.nexa.ai | Neon branch     |
+| **Production** | nexa.ai         | api.nexa.ai         | Neon main       |
 
 ### CI/CD Pipeline
 
 **On PR:**
+
 1. Lint (ESLint + Prettier)
 2. Type check (TypeScript)
 3. Unit tests (Vitest)
 4. Build check (Turborepo)
 
 **On merge to `main`:**
+
 1. Run full test suite
 2. Deploy to staging
 3. Run E2E tests against staging
@@ -1434,16 +1501,16 @@ NODE_ENV="development"
 
 ## 18. Risks & Mitigations
 
-| Risk | Severity | Mitigation |
-|------|----------|------------|
-| Claude API costs spiral | 🔴 High | Token metering per user, tier quotas, prompt caching, Haiku fallback for simple tasks |
-| Privacy leakage between agents | 🔴 High | PostgreSQL RLS, tenant-scoped pgvector namespaces, audit logs |
-| Long-running agent loops block responses | 🟡 Medium | BullMQ background jobs, SSE streaming, 10-iteration tool-call cap, user cancellation |
-| Trading agent hallucinates numbers | 🔴 High | Deterministic backtest engine; Claude interprets results only |
-| Scope creep during build | 🟡 Medium | Feature freeze after Phase 2, defer additions to v2 roadmap |
-| Vendor lock-in to Anthropic | 🟢 Low | Abstract LLM calls behind interface; OpenAI fallback ready |
-| File processing OOM on large uploads | 🟡 Medium | Stream file parsing, 50 MB limit, worker memory monitoring |
-| Stripe webhook failures | 🟡 Medium | Idempotent handlers, retry queue, dead-letter queue |
+| Risk                                     | Severity  | Mitigation                                                                            |
+| ---------------------------------------- | --------- | ------------------------------------------------------------------------------------- |
+| Claude API costs spiral                  | 🔴 High   | Token metering per user, tier quotas, prompt caching, Haiku fallback for simple tasks |
+| Privacy leakage between agents           | 🔴 High   | PostgreSQL RLS, tenant-scoped pgvector namespaces, audit logs                         |
+| Long-running agent loops block responses | 🟡 Medium | BullMQ background jobs, SSE streaming, 10-iteration tool-call cap, user cancellation  |
+| Trading agent hallucinates numbers       | 🔴 High   | Deterministic backtest engine; Claude interprets results only                         |
+| Scope creep during build                 | 🟡 Medium | Feature freeze after Phase 2, defer additions to v2 roadmap                           |
+| Vendor lock-in to Anthropic              | 🟢 Low    | Abstract LLM calls behind interface; OpenAI fallback ready                            |
+| File processing OOM on large uploads     | 🟡 Medium | Stream file parsing, 50 MB limit, worker memory monitoring                            |
+| Stripe webhook failures                  | 🟡 Medium | Idempotent handlers, retry queue, dead-letter queue                                   |
 
 ---
 
@@ -1486,6 +1553,7 @@ Items requiring client (product owner) input before build starts:
 **Role:** Full-Stack AI Developer & Software Engineer
 
 ### Credentials
+
 - B.Sc. in Computer Science & Engineering
 - AWS Certified Cloud Practitioner
 - Anthropic Certified — Claude Code in Action (March 2026)
@@ -1493,6 +1561,7 @@ Items requiring client (product owner) input before build starts:
 - 160+ completed client projects
 
 ### Specializations
+
 - Full-stack web development (WordPress, Laravel, Next.js, NestJS)
 - AI agent and agentic workflow development (Claude Code, Claude Agent SDK)
 - SaaS/dashboard development
@@ -1500,6 +1569,7 @@ Items requiring client (product owner) input before build starts:
 - SEO content systems and AI-powered automation
 
 ### Portfolio Products
+
 - Rendrix — Multi-tenant E-Commerce Dashboard
 - Tube2Blog.ai — AI SaaS Landing Page & Dashboard
 - BrandFlow AI — Social Media Automation Platform
@@ -1508,15 +1578,16 @@ Items requiring client (product owner) input before build starts:
 - RevSignal AI — Predictive Revenue Intelligence
 
 ### Contact
+
 - **Portfolio:** [https://www.mejba.me/](https://www.mejba.me/)
 
 ---
 
 ## 📜 Document History
 
-| Version | Date | Author | Changes |
-|---------|------|--------|---------|
-| 1.0 | April 24, 2026 | Engr. Mejba Ahmed | Initial PRD |
+| Version | Date           | Author            | Changes     |
+| ------- | -------------- | ----------------- | ----------- |
+| 1.0     | April 24, 2026 | Engr. Mejba Ahmed | Initial PRD |
 
 ---
 
@@ -1537,5 +1608,5 @@ This PRD is the single source of truth for Nexa development. AI coding agents sh
 
 **End of Document**
 
-*Nexa — One platform. Infinite intelligence.*
-*Built with Claude. Shipped by Engr. Mejba Ahmed.*
+_Nexa — One platform. Infinite intelligence._
+_Built with Claude. Shipped by Engr. Mejba Ahmed._

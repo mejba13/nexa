@@ -35,22 +35,22 @@ export default function LandingPage() {
     <main className="relative overflow-hidden">
       {/* Hero */}
       <section className="relative">
-        <div className="absolute inset-0 bg-grid opacity-40" />
-        <div className="absolute inset-0 bg-orange-glow" />
-        <div className="relative mx-auto max-w-7xl px-6 pt-24 pb-28 md:pt-32">
+        <div className="bg-grid absolute inset-0 opacity-40" />
+        <div className="bg-orange-glow absolute inset-0" />
+        <div className="relative mx-auto max-w-7xl px-6 pb-28 pt-24 md:pt-32">
           <div className="mx-auto max-w-3xl text-center">
-            <span className="inline-flex items-center gap-2 rounded-full border border-brand-border bg-brand-elevated px-3 py-1 text-xs text-brand-muted">
-              <span className="h-1.5 w-1.5 rounded-full bg-brand-primary" />
+            <span className="border-brand-border bg-brand-elevated text-brand-muted inline-flex items-center gap-2 rounded-full border px-3 py-1 text-xs">
+              <span className="bg-brand-primary h-1.5 w-1.5 rounded-full" />
               Multi-agent AI platform · Powered by Claude
             </span>
-            <h1 className="mt-6 font-display text-5xl font-bold leading-[1.05] tracking-tight md:text-7xl">
+            <h1 className="font-display mt-6 text-5xl font-bold leading-[1.05] tracking-tight md:text-7xl">
               One platform.
               <br />
               <span className="text-gradient-brand">Infinite intelligence.</span>
             </h1>
-            <p className="mx-auto mt-6 max-w-xl text-lg text-brand-muted">
-              Four specialized Claude agents — Trading, Music, Content, Life Coach — with
-              isolated memory, custom tools, and real-time streaming. All in one workspace.
+            <p className="text-brand-muted mx-auto mt-6 max-w-xl text-lg">
+              Four specialized Claude agents — Trading, Music, Content, Life Coach — with isolated
+              memory, custom tools, and real-time streaming. All in one workspace.
             </p>
             <div className="mt-10 flex items-center justify-center gap-3">
               <Button asChild size="lg">
@@ -69,24 +69,24 @@ export default function LandingPage() {
         <h2 className="font-display text-3xl font-semibold tracking-tight md:text-4xl">
           Meet your AI team
         </h2>
-        <p className="mt-2 max-w-2xl text-brand-muted">
-          Each agent has its own knowledge base, tools, and personality. Trained on your
-          data — private by design.
+        <p className="text-brand-muted mt-2 max-w-2xl">
+          Each agent has its own knowledge base, tools, and personality. Trained on your data —
+          private by design.
         </p>
         <div className="mt-10 grid gap-4 md:grid-cols-2">
           {AGENTS.map(({ slug, name, tagline, icon: Icon }) => (
             <article
               key={slug}
-              className="group relative overflow-hidden rounded-2xl border border-brand-border bg-brand-elevated p-8 transition-all hover:border-brand-primary/50"
+              className="border-brand-border bg-brand-elevated hover:border-brand-primary/50 group relative overflow-hidden rounded-2xl border p-8 transition-all"
             >
-              <div className="absolute inset-0 bg-gradient-to-br from-brand-primary/0 via-transparent to-brand-primary/0 opacity-0 transition-opacity group-hover:opacity-100" />
+              <div className="from-brand-primary/0 to-brand-primary/0 absolute inset-0 bg-gradient-to-br via-transparent opacity-0 transition-opacity group-hover:opacity-100" />
               <div className="relative flex items-start gap-5">
-                <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-brand-bg text-brand-primary">
+                <div className="bg-brand-bg text-brand-primary flex h-12 w-12 items-center justify-center rounded-xl">
                   <Icon className="h-6 w-6" />
                 </div>
                 <div>
                   <h3 className="font-display text-xl font-semibold">{name}</h3>
-                  <p className="mt-1 text-sm text-brand-muted">{tagline}</p>
+                  <p className="text-brand-muted mt-1 text-sm">{tagline}</p>
                 </div>
               </div>
             </article>

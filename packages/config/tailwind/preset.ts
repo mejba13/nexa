@@ -47,8 +47,7 @@ export const nexaPreset: Partial<Config> = {
       },
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-        'gradient-brand':
-          'linear-gradient(135deg, #FF9100 0%, #FB8C00 50%, #E65100 100%)',
+        'gradient-brand': 'linear-gradient(135deg, #FF9100 0%, #FB8C00 50%, #E65100 100%)',
       },
       animation: {
         'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',

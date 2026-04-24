@@ -9,17 +9,14 @@ export default async function DashboardPage() {
       <h1 className="font-display text-4xl font-semibold">
         Welcome back, <span className="text-gradient-brand">{first}</span>
       </h1>
-      <p className="mt-2 text-brand-muted">
+      <p className="text-brand-muted mt-2">
         Your AI team is ready. Pick an agent from the sidebar to start a conversation.
       </p>
       <div className="mt-10 grid gap-4 md:grid-cols-2">
         {['Trading', 'Music', 'Content', 'Life Coach'].map((label) => (
-          <div
-            key={label}
-            className="rounded-2xl border border-brand-border bg-brand-elevated p-6"
-          >
+          <div key={label} className="border-brand-border bg-brand-elevated rounded-2xl border p-6">
             <h3 className="font-display text-lg font-semibold">{label}</h3>
-            <p className="mt-1 text-sm text-brand-muted">Phase 2 — coming online.</p>
+            <p className="text-brand-muted mt-1 text-sm">Phase 2 — coming online.</p>
           </div>
         ))}
       </div>
