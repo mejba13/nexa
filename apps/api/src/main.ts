@@ -7,8 +7,10 @@ import helmet from 'helmet';
 
 import { AppModule } from './app.module';
 import { AllExceptionsFilter } from './common/filters/all-exceptions.filter';
+import { initSentry } from './shared/observability/sentry';
 
 async function bootstrap() {
+  initSentry();
   const app = await NestFactory.create(AppModule, { bufferLogs: true, rawBody: true });
   const logger = new Logger('Bootstrap');
 

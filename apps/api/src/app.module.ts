@@ -5,16 +5,19 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 
 import { AppController } from './app.controller';
 import { envValidationSchema } from './config/env';
+import { AdminModule } from './modules/admin/admin.module';
 import { AgentsModule } from './modules/agents/agents.module';
 import { ContentModule } from './modules/agents/content/content.module';
 import { LifeCoachModule } from './modules/agents/life-coach/life-coach.module';
 import { MusicModule } from './modules/agents/music/music.module';
 import { TradingModule } from './modules/agents/trading/trading.module';
 import { AuthModule } from './modules/auth/auth.module';
+import { BillingModule } from './modules/billing/billing.module';
 import { ChatModule } from './modules/chat/chat.module';
 import { DocumentsModule } from './modules/documents/documents.module';
 import { UsersModule } from './modules/users/users.module';
 import { ClaudeModule } from './shared/claude/claude.module';
+import { ObservabilityModule } from './shared/observability/observability.module';
 import { PrismaModule } from './shared/prisma/prisma.module';
 import { RagModule } from './shared/rag/rag.module';
 import { RedisModule } from './shared/redis/redis.module';
@@ -39,6 +42,7 @@ import { ToolsModule } from './shared/tools/tools.module';
     ClaudeModule,
     RagModule,
     ToolsModule,
+    ObservabilityModule,
     // Feature modules
     AuthModule,
     UsersModule,
@@ -49,6 +53,8 @@ import { ToolsModule } from './shared/tools/tools.module';
     ContentModule,
     LifeCoachModule,
     MusicModule,
+    BillingModule,
+    AdminModule,
   ],
   controllers: [AppController],
   providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],
