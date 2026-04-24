@@ -9,6 +9,7 @@ import type { StreamEvent, ToolCall } from '@nexa/types';
 
 import { ClaudeService } from '../../shared/claude/claude.service';
 import { MAX_TOOL_ITERATIONS } from '../../shared/claude/types';
+import { LangfuseService } from '../../shared/observability/langfuse.service';
 import { RetrievalService } from '../../shared/rag/retrieval.service';
 import { ToolRegistry } from '../../shared/tools/tool-registry.service';
 
@@ -44,6 +45,7 @@ export class ClaudeOrchestratorService {
     private readonly retrieval: RetrievalService,
     private readonly conversations: ConversationsService,
     private readonly usage: UsageService,
+    private readonly langfuse: LangfuseService,
   ) {}
 
   run(opts: RunOptions): Observable<{ data: StreamEvent }> {
@@ -64,6 +66,18 @@ export class ClaudeOrchestratorService {
     });
 
     out.next({ data: { type: 'message_start', messageId: userMsg.id } });
+
+    // Open a Langfuse trace for this turn — no-op when LANGFUSE keys absent.
+    const trace = this.langfuse.trace({
+      name: `chat.${opts.agentType.toLowerCase()}`,
+      userId: opts.userId,
+      metadata: {
+        conversationId: opts.conversationId,
+        agentType: opts.agentType,
+        agentName: opts.agentRow.name,
+        modelId: opts.agentRow.modelId,
+      },
+    });
 
     // 2. Retrieve RAG context (userId + agentType scoped — PRD §12).
     const chunks = await this.retrieval
@@ -118,8 +132,26 @@ export class ClaudeOrchestratorService {
       });
 
       const final = await stream.finalMessage();
-      totalIn += final.usage.input_tokens ?? 0;
-      totalOut += final.usage.output_tokens ?? 0;
+      const iterIn = final.usage.input_tokens ?? 0;
+      const iterOut = final.usage.output_tokens ?? 0;
+      totalIn += iterIn;
+      totalOut += iterOut;
+
+      // One Langfuse generation per Claude call — gives per-iteration cost when
+      // a single user message triggers multiple tool-use rounds.
+      this.langfuse.recordGeneration(trace?.id, {
+        name: `claude.iter${iter}`,
+        model: opts.agentRow.modelId,
+        input: messages,
+        output: final.content,
+        tokensInput: iterIn,
+        tokensOutput: iterOut,
+        costUsd: this.claude.estimateCostUsd(
+          opts.agentRow.modelId as 'claude-opus-4-7',
+          iterIn,
+          iterOut,
+        ),
+      });
 
       const toolUses = final.content.filter(
         (b): b is Anthropic.ToolUseBlock => b.type === 'tool_use',

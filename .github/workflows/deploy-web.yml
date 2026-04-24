@@ -1,0 +1,46 @@
+name: Deploy Web
+
+on:
+  push:
+    tags:
+      - 'web-v*'
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-web
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    environment:
+      name: production-web
+      url: ${{ vars.WEB_URL }}
+    env:
+      VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.6.0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Pull Vercel env
+        run: npx vercel@latest pull --yes --environment=production --token "$VERCEL_TOKEN" --cwd apps/web
+
+      - name: Build with Vercel
+        run: npx vercel@latest build --prod --token "$VERCEL_TOKEN" --cwd apps/web
+
+      - name: Deploy prebuilt to Vercel
+        run: npx vercel@latest deploy --prebuilt --prod --token "$VERCEL_TOKEN" --cwd apps/web

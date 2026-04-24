@@ -1,0 +1,56 @@
+name: Deploy API
+
+on:
+  push:
+    tags:
+      - 'api-v*'
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-api
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    environment:
+      name: production-api
+      url: ${{ vars.API_URL }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 9.6.0
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Prisma generate
+        run: pnpm --filter @nexa/api prisma:generate
+
+      - name: Typecheck
+        run: pnpm --filter @nexa/api typecheck
+
+      - name: Build
+        run: pnpm --filter @nexa/api build
+
+      - name: Test
+        run: pnpm --filter @nexa/api test
+
+      - name: Install Railway CLI
+        run: npm i -g @railway/cli@latest
+
+      - name: Deploy to Railway
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+          RAILWAY_SERVICE: ${{ vars.RAILWAY_SERVICE }}
+        run: railway up --service "$RAILWAY_SERVICE" --detach
