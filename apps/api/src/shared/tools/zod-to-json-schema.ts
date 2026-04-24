@@ -1,22 +1,22 @@
 import type Anthropic from '@anthropic-ai/sdk';
-import type { z, type ZodSchema, type ZodTypeAny } from 'zod';
+import type { z, type ZodTypeAny } from 'zod';
 
 /**
  * Minimal Zod → JSON Schema converter, enough for Anthropic tool input_schema.
  * Avoids pulling in zod-to-json-schema as a full dep; extend as new Zod types
  * are actually used by tools.
  */
-export function zodToJsonSchema(schema: ZodSchema): Anthropic.Messages.Tool['input_schema'] {
-  const shape = convert(schema as ZodTypeAny);
+export function zodToJsonSchema(schema: ZodTypeAny): Anthropic.Tool.InputSchema {
+  const shape = convert(schema);
   if (shape.type !== 'object') {
     return { type: 'object', properties: {} };
   }
-  return shape as Anthropic.Messages.Tool['input_schema'];
+  return shape as Anthropic.Tool.InputSchema;
 }
 
 function convert(schema: ZodTypeAny): Record<string, unknown> {
-  const def = schema._def;
-  const typeName = def.typeName as string;
+  const def = schema._def as { typeName: string; [k: string]: unknown };
+  const typeName = def.typeName;
 
   switch (typeName) {
     case 'ZodString':
@@ -30,18 +30,19 @@ function convert(schema: ZodTypeAny): Record<string, unknown> {
     case 'ZodEnum':
       return { type: 'string', enum: def.values };
     case 'ZodArray':
-      return { type: 'array', items: convert(def.type) };
+      return { type: 'array', items: convert(def.type as ZodTypeAny) };
     case 'ZodOptional':
     case 'ZodNullable':
     case 'ZodDefault':
-      return convert(def.innerType);
+      return convert(def.innerType as ZodTypeAny);
     case 'ZodObject': {
       const raw = (schema as z.ZodObject<z.ZodRawShape>).shape;
       const properties: Record<string, unknown> = {};
       const required: string[] = [];
       for (const [key, value] of Object.entries(raw)) {
-        properties[key] = convert(value as ZodTypeAny);
-        if (!(value as ZodTypeAny).isOptional()) required.push(key);
+        const v = value as ZodTypeAny;
+        properties[key] = convert(v);
+        if (!v.isOptional()) required.push(key);
       }
       return {
         type: 'object',
