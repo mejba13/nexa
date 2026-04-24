@@ -42,6 +42,18 @@ export class DocumentProcessor extends WorkerHost {
       const meta = doc.metadata as { key?: string } | null;
       if (!meta?.key) throw new Error('Missing R2 key in document metadata');
 
+      // TRADING CSVs are raw market data — the backtest engine consumes the full
+      // buffer deterministically. Skip chunk/embed so we don't waste OpenAI calls
+      // and don't leak bars into RAG retrieval.
+      if (doc.agentType === 'TRADING' && doc.mimeType === 'text/csv') {
+        await this.prisma.document.update({
+          where: { id: documentId },
+          data: { status: 'INDEXED' },
+        });
+        this.logger.log(`Registered TRADING CSV ${documentId} (no RAG indexing)`);
+        return;
+      }
+
       const buffer = await this.storage.getObject(meta.key);
       const text = await this.parser.parse(buffer, doc.mimeType);
       if (!text) throw new Error('Parser produced no text');

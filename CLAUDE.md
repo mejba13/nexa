@@ -68,6 +68,13 @@ Planned: `pnpm dev` (turbo dev all), `pnpm --filter web dev`, `pnpm --filter api
 
 Follow PRD §15 phases. Phase 1 scaffolding → Phase 2 agent core (orchestrator + SSE + RAG + file upload) → Phase 3 four agents (Trading → Content → Life Coach → Music) → Phase 4 billing/admin/observability → Phase 5 launch. Do not jump ahead; each phase is a deliverable gate.
 
+Phase 3 agents plug in via `TradingModule`-style modules that register tools in `ToolRegistry.onModuleInit`. Pattern: `apps/api/src/modules/agents/<agent>/` with `<agent>.service.ts` (business logic), `<agent>.controller.ts` (REST), `tools/` (one file per tool implementing `ITool`), `<agent>.module.ts` (wires service + controller + tools and calls `registry.register()` on bootstrap).
+
+## Deterministic invariants (Phase 3+)
+
+- **Trading agent:** metrics come from `BacktestEngine` in `apps/api/src/modules/agents/trading/backtest/`. The six trading tools return structured JSON; Claude narrates only. Rule DSL: `RuleGroup { combinator: 'all'|'any', conditions: Condition[] }` over `{sma, ema, rsi, price, return}` indicators. One symbol, long-only, fills at close, flat `perTradePct` fees. CSV parser accepts `date|time|timestamp, open, high, low, close[, volume]` (any order, ISO/unix).
+- **TRADING CSVs skip RAG.** `DocumentProcessor` short-circuits when `agentType === 'TRADING' && mimeType === 'text/csv'` — we need raw bars, not embeddings.
+
 ## Open items (PRD §20)
 
 Pricing tier confirmation, domain choice, market data provider (Alpha Vantage vs Polygon vs Yahoo), geo scope (GDPR impact), branding, beta pool. Flag new ambiguity as an Open Question rather than guessing.

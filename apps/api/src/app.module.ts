@@ -6,6 +6,7 @@ import { ThrottlerGuard, ThrottlerModule } from '@nestjs/throttler';
 import { AppController } from './app.controller';
 import { envValidationSchema } from './config/env';
 import { AgentsModule } from './modules/agents/agents.module';
+import { TradingModule } from './modules/agents/trading/trading.module';
 import { AuthModule } from './modules/auth/auth.module';
 import { ChatModule } from './modules/chat/chat.module';
 import { DocumentsModule } from './modules/documents/documents.module';
@@ -41,6 +42,7 @@ import { ToolsModule } from './shared/tools/tools.module';
     AgentsModule,
     ChatModule,
     DocumentsModule,
+    TradingModule,
   ],
   controllers: [AppController],
   providers: [{ provide: APP_GUARD, useClass: ThrottlerGuard }],
