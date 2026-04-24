@@ -1,0 +1,24 @@
+{
+  "name": "@nexa/validators",
+  "version": "0.1.0",
+  "private": true,
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "lint": "eslint 'src/**/*.ts'",
+    "typecheck": "tsc --noEmit",
+    "test": "echo \"no tests\""
+  },
+  "dependencies": {
+    "@nexa/types": "workspace:*",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@nexa/config": "workspace:*",
+    "eslint": "^8.57.0",
+    "typescript": "^5.4.5"
+  }
+}
