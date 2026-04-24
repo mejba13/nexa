@@ -1,4 +1,4 @@
-import type { AgentType } from './agents.js';
+import type { AgentType } from './agents';
 
 export type MessageRole = 'USER' | 'ASSISTANT' | 'SYSTEM' | 'TOOL';
 

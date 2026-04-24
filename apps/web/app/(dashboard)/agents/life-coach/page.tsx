@@ -22,7 +22,7 @@ async function ensureConversation(token: string): Promise<string> {
   });
   if (list.ok) {
     const data = (await list.json()) as Conversation[];
-    if (data.length) return data[0].id;
+    if (data[0]) return data[0].id;
   }
   const created = await fetch(`${API}/conversations`, {
     method: 'POST',

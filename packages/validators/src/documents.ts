@@ -2,7 +2,7 @@ import { z } from 'zod';
 
 import { MAX_FILE_SIZE_BYTES, SUPPORTED_MIME_TYPES } from '@nexa/types';
 
-import { agentTypeSchema } from './agents.js';
+import { agentTypeSchema } from './agents';
 
 export const uploadDocumentSchema = z.object({
   agentType: agentTypeSchema,

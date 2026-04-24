@@ -1,5 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import type { AgentType, Conversation, Message } from '@prisma/client';
+import type { AgentType, Conversation, Message, Prisma } from '@prisma/client';
 
 import { PrismaService } from '../../shared/prisma/prisma.service';
 
@@ -75,7 +75,7 @@ export class ConversationsService {
 
   async appendMessage(
     conversationId: string,
-    data: Omit<Message, 'id' | 'createdAt'>,
+    data: Omit<Prisma.MessageUncheckedCreateInput, 'id' | 'createdAt' | 'conversationId'>,
   ): Promise<Message> {
     const msg = await this.prisma.message.create({ data: { ...data, conversationId } });
     await this.prisma.conversation.update({

@@ -1,6 +1,6 @@
 import { z } from 'zod';
 
-import { agentTypeSchema } from './agents.js';
+import { agentTypeSchema } from './agents';
 
 export const createConversationSchema = z.object({
   agentType: agentTypeSchema,

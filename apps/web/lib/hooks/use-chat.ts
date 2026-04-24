@@ -75,7 +75,7 @@ export function useChat({ conversationId, initialMessages = [] }: UseChatOptions
           setMessages((prev) => {
             const copy = [...prev];
             const last = copy[copy.length - 1];
-            if (last.role !== 'ASSISTANT') return copy;
+            if (!last || last.role !== 'ASSISTANT') return copy;
             switch (evt.type) {
               case 'content_delta':
                 last.content += evt.delta;

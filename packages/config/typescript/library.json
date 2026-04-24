@@ -2,10 +2,7 @@
   "$schema": "https://json.schemastore.org/tsconfig",
   "extends": "./base.json",
   "compilerOptions": {
-    "outDir": "./dist",
-    "rootDir": "./src",
     "composite": false,
     "declaration": true
-  },
-  "include": ["src/**/*"]
+  }
 }

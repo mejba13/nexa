@@ -33,6 +33,10 @@ export const envValidationSchema = z.object({
   SENTRY_DSN: z.string().optional(),
   POSTHOG_KEY: z.string().optional(),
 
+  SPOTIFY_CLIENT_ID: z.string().optional(),
+  SPOTIFY_CLIENT_SECRET: z.string().optional(),
+  FREESOUND_API_KEY: z.string().optional(),
+
   NEXT_PUBLIC_APP_URL: z.string().url().default('http://localhost:3000'),
 });
 

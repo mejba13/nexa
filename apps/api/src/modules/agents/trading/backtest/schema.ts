@@ -12,7 +12,7 @@ const conditionSchema = z.object({
   right: z.union([z.number(), indicatorRefSchema]),
 });
 
-type RuleGroupShape = {
+export type RuleGroupShape = {
   combinator: 'all' | 'any';
   conditions: Array<z.infer<typeof conditionSchema> | RuleGroupShape>;
 };

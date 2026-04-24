@@ -1,6 +1,7 @@
 import type Anthropic from '@anthropic-ai/sdk';
 import { Injectable, Logger } from '@nestjs/common';
-import type { AgentType, Prisma } from '@prisma/client';
+import type { AgentType } from '@prisma/client';
+import type { InputJsonValue } from '@prisma/client/runtime/library';
 import type { Observable } from 'rxjs';
 import { Subject } from 'rxjs';
 
@@ -58,13 +59,8 @@ export class ClaudeOrchestratorService {
   private async execute(opts: RunOptions, out: Subject<{ data: StreamEvent }>): Promise<void> {
     // 1. Persist the user message first so reloads stay consistent.
     const userMsg = await this.conversations.appendMessage(opts.conversationId, {
-      conversationId: opts.conversationId,
       role: 'USER',
       content: opts.userMessage,
-      toolCalls: null,
-      toolResults: null,
-      tokensInput: null,
-      tokensOutput: null,
     });
 
     out.next({ data: { type: 'message_start', messageId: userMsg.id } });
@@ -126,10 +122,10 @@ export class ClaudeOrchestratorService {
       totalOut += final.usage.output_tokens ?? 0;
 
       const toolUses = final.content.filter(
-        (b): b is Anthropic.Messages.ToolUseBlock => b.type === 'tool_use',
+        (b): b is Anthropic.ToolUseBlock => b.type === 'tool_use',
       );
 
-      if (toolUses.length === 0 || final.stop_reason !== 'tool_use') {
+      if (toolUses.length === 0 || (final.stop_reason as string) !== 'tool_use') {
         // Finished — assistant answered with plain text.
         break;
       }
@@ -138,7 +134,7 @@ export class ClaudeOrchestratorService {
       messages.push({ role: 'assistant', content: final.content });
 
       // Execute each tool, emit events, collect tool_result blocks for next turn.
-      const toolResultBlocks: Anthropic.Messages.ToolResultBlockParam[] = [];
+      const toolResultBlocks: Anthropic.ToolResultBlockParam[] = [];
       for (const tu of toolUses) {
         const call: ToolCall = {
           id: tu.id,
@@ -190,11 +186,10 @@ export class ClaudeOrchestratorService {
     );
 
     await this.conversations.appendMessage(opts.conversationId, {
-      conversationId: opts.conversationId,
       role: 'ASSISTANT',
       content: finalText,
-      toolCalls: (aggregatedToolCalls as unknown as Prisma.InputJsonValue) ?? null,
-      toolResults: (aggregatedToolResults as unknown as Prisma.InputJsonValue) ?? null,
+      toolCalls: aggregatedToolCalls as unknown as InputJsonValue,
+      toolResults: aggregatedToolResults as unknown as InputJsonValue,
       tokensInput: totalIn,
       tokensOutput: totalOut,
     });
