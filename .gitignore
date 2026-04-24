@@ -2,6 +2,10 @@
 node_modules/
 .pnpm-store/
 
+# Package managers — Nexa uses pnpm exclusively; block stray npm/yarn locks.
+package-lock.json
+yarn.lock
+
 # Build output
 dist/
 build/
