@@ -2,6 +2,11 @@ import Link from 'next/link';
 import { UserButton } from '@clerk/nextjs';
 import { Compass, LayoutDashboard, Music, PenTool, Settings, TrendingUp } from 'lucide-react';
 
+// Dashboard routes are fully dynamic — they depend on the signed-in user +
+// live API calls. Prerendering them at build would require a mounted
+// ClerkProvider + API, which isn't available in the CI build step.
+export const dynamic = 'force-dynamic';
+
 const NAV = [
   { href: '/dashboard', label: 'Overview', icon: LayoutDashboard },
   { href: '/agents/trading', label: 'Trading', icon: TrendingUp },

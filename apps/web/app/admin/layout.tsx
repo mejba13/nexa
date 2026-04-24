@@ -2,6 +2,9 @@ import Link from 'next/link';
 
 import { Button } from '@/components/ui/button';
 
+// Admin pages make live API calls + depend on signed-in role — can't prerender.
+export const dynamic = 'force-dynamic';
+
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
     <div className="bg-brand-bg text-brand-text flex min-h-screen flex-col">

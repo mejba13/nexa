@@ -1,3 +1,4 @@
+import { NextResponse, type NextRequest } from 'next/server';
 import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server';
 
 const isPublicRoute = createRouteMatcher([
@@ -9,9 +10,28 @@ const isPublicRoute = createRouteMatcher([
   '/api/webhooks/(.*)',
 ]);
 
-export default clerkMiddleware((auth, req) => {
+/**
+ * Clerk publishable keys start with `pk_test_` or `pk_live_` followed by a
+ * non-trivial base64-ish payload. When the env var is absent or still the
+ * placeholder (`pk_test_REPLACE_ME`), we short-circuit auth so the landing
+ * page renders during local setup — protected routes 302 to /sign-in so the
+ * operator knows they haven't finished configuring Clerk yet.
+ */
+const publishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ?? '';
+const clerkReady = /^pk_(test|live)_[A-Za-z0-9]{16,}$/.test(publishableKey);
+
+const clerkGate = clerkMiddleware((auth, req) => {
   if (!isPublicRoute(req)) auth().protect();
 });
+
+function fallbackGate(req: NextRequest) {
+  if (isPublicRoute(req)) return NextResponse.next();
+  const signIn = new URL('/sign-in', req.url);
+  signIn.searchParams.set('clerk_not_configured', '1');
+  return NextResponse.redirect(signIn);
+}
+
+export default clerkReady ? clerkGate : fallbackGate;
 
 export const config = {
   matcher: [

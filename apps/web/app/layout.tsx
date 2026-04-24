@@ -19,7 +19,7 @@ export const metadata: Metadata = {
   },
   description:
     'A multi-agent AI platform powered by Claude. Four specialized autonomous agents in one workspace.',
-  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3000'),
+  metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL ?? 'http://localhost:3002'),
   openGraph: {
     title: 'Nexa',
     description: 'One platform. Infinite intelligence.',
@@ -32,7 +32,35 @@ export const viewport: Viewport = {
   colorScheme: 'dark',
 };
 
+const publishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ?? '';
+const clerkReady = /^pk_(test|live)_[A-Za-z0-9]{16,}$/.test(publishableKey);
+
+/**
+ * Base document shell — same styles, same font loading regardless of Clerk.
+ * Wrapped in ClerkProvider only when a real publishable key is configured.
+ * Keeps local dev bootstrap-able before the operator has finished wiring
+ * Clerk; the middleware (see middleware.ts) redirects protected routes to
+ * /sign-in with a clerk_not_configured query flag in that mode.
+ */
+function Shell({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en" className={`dark ${jetbrains.variable}`} suppressHydrationWarning>
+      <head>
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Google+Sans+Display:wght@400;500;700&family=Google+Sans+Text:wght@400;500;700&display=swap"
+        />
+      </head>
+      <body className="bg-brand-bg text-brand-text font-sans antialiased">
+        <Providers>{children}</Providers>
+      </body>
+    </html>
+  );
+}
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  if (!clerkReady) return <Shell>{children}</Shell>;
+
   return (
     <ClerkProvider
       appearance={{
@@ -48,17 +76,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         },
       }}
     >
-      <html lang="en" className={`dark ${jetbrains.variable}`} suppressHydrationWarning>
-        <head>
-          <link
-            rel="stylesheet"
-            href="https://fonts.googleapis.com/css2?family=Google+Sans+Display:wght@400;500;700&family=Google+Sans+Text:wght@400;500;700&display=swap"
-          />
-        </head>
-        <body className="bg-brand-bg text-brand-text font-sans antialiased">
-          <Providers>{children}</Providers>
-        </body>
-      </html>
+      <Shell>{children}</Shell>
     </ClerkProvider>
   );
 }
