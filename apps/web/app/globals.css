@@ -12,10 +12,13 @@
   body {
     @apply bg-brand-bg text-brand-text;
     min-height: 100%;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   body {
     font-family: 'Google Sans Text', system-ui, sans-serif;
+    font-feature-settings: 'ss01', 'cv01', 'cv11';
   }
 
   h1,
@@ -25,7 +28,8 @@
   h5,
   h6 {
     font-family: 'Google Sans Display', system-ui, sans-serif;
-    letter-spacing: -0.01em;
+    letter-spacing: -0.015em;
+    font-feature-settings: 'ss01';
   }
 
   code,
@@ -33,14 +37,14 @@
   kbd,
   samp {
     font-family: var(--font-mono), 'JetBrains Mono', ui-monospace, monospace;
+    font-feature-settings: 'cv01', 'cv02', 'ss01';
   }
 
   ::selection {
-    background: rgba(255, 145, 0, 0.35);
+    background: rgba(255, 145, 0, 0.45);
     color: #ffffff;
   }
 
-  /* Scrollbar (dark) */
   ::-webkit-scrollbar {
     width: 10px;
     height: 10px;
@@ -55,21 +59,88 @@
   ::-webkit-scrollbar-thumb:hover {
     background: #2a2a2a;
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  /* Editorial section marker — top-left of a section, e.g. "§01 / Agents" */
+  .editorial-marker {
+    @apply flex items-baseline gap-3 font-mono text-[10px] uppercase tracking-editorial-wide text-brand-muted;
+  }
+
+  /* Hairline divider used between editorial sections */
+  .hairline {
+    @apply h-px w-full bg-gradient-to-r from-transparent via-brand-border to-transparent;
+  }
+
+  /* Display eyebrow — small all-caps label before a big headline */
+  .eyebrow {
+    @apply font-mono text-xs uppercase tracking-editorial-wide text-brand-primary;
+  }
+
+  /* Pull quote styling — Instrument Serif italic, oversized */
+  .pullquote {
+    @apply font-serif text-3xl italic leading-tight text-brand-text md:text-4xl;
+    text-wrap: balance;
+  }
 }
 
 @layer utilities {
   .bg-grid {
     background-image:
-      linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-      linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+      linear-gradient(to right, rgba(255, 255, 255, 0.035) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
     background-size: 48px 48px;
+  }
+
+  .bg-grid-dense {
+    background-image:
+      linear-gradient(to right, rgba(255, 145, 0, 0.08) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(255, 145, 0, 0.05) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  .bg-grain {
+    background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 0.35 0'/></filter><rect width='100%' height='100%' filter='url(%23n)' opacity='0.5'/></svg>");
+    background-size: 200px 200px;
+    background-repeat: repeat;
+    mix-blend-mode: overlay;
+    opacity: 0.4;
+    pointer-events: none;
   }
 
   .bg-orange-glow {
     background: radial-gradient(
-      600px circle at 50% 0%,
+      ellipse 80% 60% at 50% 0%,
       rgba(255, 145, 0, 0.18),
-      transparent 60%
+      transparent 70%
+    );
+  }
+
+  .bg-orange-glow-bottom {
+    background: radial-gradient(
+      ellipse 90% 50% at 50% 100%,
+      rgba(255, 145, 0, 0.12),
+      transparent 65%
+    );
+  }
+
+  .bg-brand-ruled {
+    background-image: repeating-linear-gradient(
+      90deg,
+      transparent 0,
+      transparent 23px,
+      rgba(255, 145, 0, 0.08) 23px,
+      rgba(255, 145, 0, 0.08) 24px
     );
   }
 
@@ -78,5 +149,54 @@
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
+  }
+
+  .text-gradient-fade {
+    background: linear-gradient(180deg, #f5f5f5 0%, #f5f5f5 60%, #8a8a8a 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .stagger > *:nth-child(1) { animation-delay: 0.05s; }
+  .stagger > *:nth-child(2) { animation-delay: 0.15s; }
+  .stagger > *:nth-child(3) { animation-delay: 0.25s; }
+  .stagger > *:nth-child(4) { animation-delay: 0.35s; }
+  .stagger > *:nth-child(5) { animation-delay: 0.45s; }
+  .stagger > *:nth-child(6) { animation-delay: 0.55s; }
+
+  .mask-fade-x {
+    mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+  }
+
+  .ring-hairline {
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.06);
+  }
+
+  .ring-hairline-strong {
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+  }
+
+  .running-number {
+    @apply font-mono text-xs uppercase tracking-editorial-wide text-brand-muted;
+  }
+
+  .link-underline {
+    position: relative;
+  }
+  .link-underline::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: -3px;
+    width: 100%;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 350ms cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .link-underline:hover::after {
+    transform: scaleX(1);
   }
 }
