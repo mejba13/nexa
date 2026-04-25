@@ -255,6 +255,19 @@ interface SeedUser {
 // content to render the moment the stack boots.
 const SEED_USERS: SeedUser[] = [
   {
+    // Operator / admin placeholder. clerkId stays `user_seed_mejba` until
+    // the real account signs up — then AuthService.syncFromClerk reassigns
+    // it to the real Clerk userId and pushes publicMetadata.role='admin'
+    // (gated on ADMIN_EMAILS env). Demo data follows automatically because
+    // every relation FK targets User.id, not clerkId.
+    slug: 'mejba',
+    email: 'mejba@nexa.com',
+    name: 'Engr. Mejba Ahmed',
+    plan: 'BUSINESS',
+    persona:
+      'Operator / admin · sees the full app — all four agents, populated KB, recent conversations, billing on the highest tier.',
+  },
+  {
     slug: 'alex',
     email: 'alex.rivera@nexa.example',
     name: 'Alex Rivera',
@@ -321,6 +334,7 @@ async function seedUserAgentLinks(userIds: Map<string, string>): Promise<void> {
   // alex uses all four; priya = trading+content; marcus = lifecoach+content;
   // sofia = content only; jordan = trading (free tier).
   const links: Array<{ slug: string; types: AgentType[] }> = [
+    { slug: 'mejba', types: ['TRADING', 'MUSIC', 'CONTENT', 'LIFE_COACH'] },
     { slug: 'alex', types: ['TRADING', 'MUSIC', 'CONTENT', 'LIFE_COACH'] },
     { slug: 'priya', types: ['TRADING', 'CONTENT'] },
     { slug: 'marcus', types: ['LIFE_COACH', 'CONTENT'] },
@@ -452,8 +466,9 @@ const TRADING_STRATEGIES = [
 ];
 
 async function seedTradingData(userIds: Map<string, string>): Promise<void> {
-  // Attribute strategies to alex (multi-domain) and priya (quant).
-  const owners = ['alex', 'priya'];
+  // Attribute strategies to mejba (admin), alex (multi-domain), and priya (quant)
+  // so the admin workspace has trading content out of the box.
+  const owners = ['mejba', 'alex', 'priya'];
 
   const strategyIds: string[] = [];
   for (const [i, strat] of TRADING_STRATEGIES.entries()) {
@@ -667,6 +682,51 @@ const DEMO_DOCUMENTS: DemoDocument[] = [
     filename: 'spy-weekly-2020-2024.csv',
     mimeType: 'text/csv',
     bytes: 26_000,
+  },
+
+  // ============ MEJBA — admin operator workspace ============
+  // Spans every agent so the admin sees a populated KB out of the box.
+  {
+    ownerSlug: 'mejba',
+    agentType: 'CONTENT',
+    filename: 'nexa-brand-voice-2026.pdf',
+    mimeType: 'application/pdf',
+    bytes: 482_000,
+  },
+  {
+    ownerSlug: 'mejba',
+    agentType: 'CONTENT',
+    filename: 'launch-announcement-template.docx',
+    mimeType: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    bytes: 64_000,
+  },
+  {
+    ownerSlug: 'mejba',
+    agentType: 'TRADING',
+    filename: 'spy-daily-2024.csv',
+    mimeType: 'text/csv',
+    bytes: 38_000,
+  },
+  {
+    ownerSlug: 'mejba',
+    agentType: 'LIFE_COACH',
+    filename: 'q1-weekly-review-template.md',
+    mimeType: 'text/markdown',
+    bytes: 12_000,
+  },
+  {
+    ownerSlug: 'mejba',
+    agentType: 'LIFE_COACH',
+    filename: '2026-okrs.md',
+    mimeType: 'text/markdown',
+    bytes: 8_400,
+  },
+  {
+    ownerSlug: 'mejba',
+    agentType: 'MUSIC',
+    filename: 'reference-tracks-lofi.txt',
+    mimeType: 'text/plain',
+    bytes: 4_200,
   },
 ];
 
@@ -908,6 +968,76 @@ const DEMO_CONVERSATIONS: DemoConversationSeed[] = [
       },
     ],
   },
+
+  // ============ MEJBA — admin operator ============
+  {
+    ownerSlug: 'mejba',
+    agentType: 'TRADING',
+    title: 'SPY daily — RSI(14) pullback variant',
+    messages: [
+      {
+        role: 'USER',
+        content:
+          'Run my SPY daily strategy on 2024 and tell me whether the RSI(14)<35 entry beats RSI(14)<30 on the same period.',
+      },
+      {
+        role: 'ASSISTANT',
+        content:
+          "I'll need the 2024 SPY bars uploaded as a Document with agentType=TRADING (CSV bypasses RAG, the engine reads raw OHLCV). Once that lands I'll run both variants under run_backtest and compare with compare_strategies — same fees, same sizing, same date window. The difference between <30 and <35 is usually fewer entries with higher avg-trade quality vs more entries with tighter risk; I'll have actual numbers in seconds, not vibes.",
+      },
+    ],
+  },
+  {
+    ownerSlug: 'mejba',
+    agentType: 'CONTENT',
+    title: 'v0.2 launch announcement — long-form draft',
+    messages: [
+      {
+        role: 'USER',
+        content:
+          'Draft a 600-word launch announcement for Nexa v0.2. Voice: confident, technical, anti-AI-slop. Audience: indie founders + senior engineers.',
+      },
+      {
+        role: 'ASSISTANT',
+        content:
+          "Here's a 600-word draft anchored in the brand voice doc you uploaded. Hook leads with the four-agent thesis, body grounds it in the deterministic backtest invariant + isolated memory, close hits the 100k-tokens-free hook. Want me to spin a 280-character X version + a 3-bullet LinkedIn version off the same beats so you ship the family of posts in one go?",
+      },
+    ],
+  },
+  {
+    ownerSlug: 'mejba',
+    agentType: 'LIFE_COACH',
+    title: 'Q1 weekly review — what shipped, what stalled',
+    messages: [
+      {
+        role: 'USER',
+        content:
+          "It is Friday — run my weekly review against this week's journal entries. Surface stalls, name one habit to drop.",
+      },
+      {
+        role: 'ASSISTANT',
+        content:
+          "From extract_themes over the last 7 entries: shipping pace is up (auth + dashboard + agent UIs), but you flagged 'low-energy mornings after late-night coding' three times. The stall is unfinished trading-strategy uploads — three drafts, none run. Drop the habit of starting strategy work after 9pm: it correlates 1:1 with the morning fatigue. Move it to the 7-9am block where your journal language is consistently sharpest.",
+      },
+    ],
+  },
+  {
+    ownerSlug: 'mejba',
+    agentType: 'MUSIC',
+    title: '90 BPM lo-fi pack — palette + arrangement',
+    messages: [
+      {
+        role: 'USER',
+        content:
+          "I'm scoring a launch video — need a 30-second lo-fi loop at 90 BPM, dusty but uplifting. Palette + arrangement.",
+      },
+      {
+        role: 'ASSISTANT',
+        content:
+          'Palette (lo-fi hiphop template, brightened): warm Rhodes lead, upright bass, light side-stick boom-bap, vinyl crackle for texture, one-shot pluck for the lift. Arrangement for 30s at 90 BPM = 45 bars; condense lofi-loop to: 4-bar vinyl intro · 12-bar main loop · 8-bar uplift variation · 6-bar tail. Layer the pluck only over bars 17-24 so the launch CTA hits with the lift. Want me to source 3 royalty-free Rhodes samples from Freesound?',
+      },
+    ],
+  },
 ];
 
 async function seedConversations(userIds: Map<string, string>): Promise<void> {
@@ -967,6 +1097,12 @@ async function seedUsageRecords(userIds: Map<string, string>): Promise<void> {
     dailyTokensOut: number;
     weights: Partial<Record<AgentType, number>>;
   }> = [
+    {
+      slug: 'mejba',
+      dailyTokensIn: 38_000,
+      dailyTokensOut: 72_000,
+      weights: { TRADING: 0.3, CONTENT: 0.3, LIFE_COACH: 0.2, MUSIC: 0.2 },
+    },
     {
       slug: 'alex',
       dailyTokensIn: 28_000,

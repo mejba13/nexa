@@ -13,6 +13,8 @@ export const envValidationSchema = z.object({
 
   CLERK_SECRET_KEY: z.string().min(1),
   CLERK_WEBHOOK_SECRET: z.string().min(1),
+  /** Comma-separated email allowlist auto-promoted to admin on first Clerk sync. */
+  ADMIN_EMAILS: z.string().default(''),
 
   ANTHROPIC_API_KEY: z.string().min(1),
   OPENAI_API_KEY: z.string().min(1),

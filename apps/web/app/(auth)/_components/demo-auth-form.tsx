@@ -1,32 +1,33 @@
 'use client';
 
 import { useState, type FormEvent } from 'react';
-import Link from 'next/link';
-import { ArrowRight, ArrowUpRight, Eye, EyeOff, KeyRound } from 'lucide-react';
+import { ArrowRight, Eye, EyeOff } from 'lucide-react';
 
 type Mode = 'sign-in' | 'sign-up';
 
 interface Props {
   mode: Mode;
+  /**
+   * Reserved for future use (e.g. show a quiet inline error if redirected
+   * from a protected route while auth isn't configured). Currently unused;
+   * the form renders identically regardless.
+   */
   redirected?: boolean;
 }
 
 /**
  * Pixel-identical preview of the editorial auth form rendered when Clerk
- * is not configured. Inputs are real (uncontrolled), submit shows an inline
- * notice instead of attempting auth, plus a collapsible setup helper.
+ * is not configured. Inputs render but submit is a no-op so the page
+ * doesn't half-work; once Clerk keys are in place EditorialAuthForm
+ * (the live one) takes over from sign-in/sign-up pages.
  */
-export function DemoAuthForm({ mode, redirected }: Props) {
+export function DemoAuthForm({ mode, redirected: _redirected }: Props) {
   const [showPw, setShowPw] = useState(false);
-  const [showHelp, setShowHelp] = useState(Boolean(redirected));
-  const [submitted, setSubmitted] = useState(false);
 
   const isSignUp = mode === 'sign-up';
 
   function onSubmit(e: FormEvent) {
     e.preventDefault();
-    setSubmitted(true);
-    setShowHelp(true);
   }
 
   return (
@@ -47,15 +48,11 @@ export function DemoAuthForm({ mode, redirected }: Props) {
       </div>
 
       <div className="grid grid-cols-2 gap-3">
-        <DemoOAuthButton provider="google" onClick={() => setShowHelp(true)} />
-        <DemoOAuthButton provider="github" onClick={() => setShowHelp(true)} />
+        <DemoOAuthButton provider="google" onClick={() => undefined} />
+        <DemoOAuthButton provider="github" onClick={() => undefined} />
       </div>
 
       <Divider label="or with email" />
-
-      {(submitted || redirected) && (
-        <DemoNotice expanded={showHelp} onToggle={() => setShowHelp((s) => !s)} />
-      )}
 
       <form onSubmit={onSubmit} className="space-y-4">
         {isSignUp && (
@@ -159,73 +156,6 @@ function Divider({ label }: { label: string }) {
         {label}
       </span>
       <span className="bg-brand-border h-px flex-1" />
-    </div>
-  );
-}
-
-function DemoNotice({ expanded, onToggle }: { expanded: boolean; onToggle: () => void }) {
-  return (
-    <div className="border-brand-primary/30 bg-brand-primary/5 rounded-xl border">
-      <button
-        type="button"
-        onClick={onToggle}
-        className="flex w-full items-center justify-between gap-3 px-4 py-3 text-left"
-      >
-        <div className="flex items-center gap-3">
-          <KeyRound className="text-brand-primary h-4 w-4 shrink-0" />
-          <div>
-            <div className="text-brand-primary text-sm font-medium">Demo mode — auth not wired</div>
-            <p className="text-brand-muted-strong mt-0.5 text-xs">
-              Paste your Clerk keys into <code className="font-mono">apps/web/.env.local</code> to
-              enable real sign-in.
-            </p>
-          </div>
-        </div>
-        <span className="tracking-editorial-wide text-brand-muted font-mono text-[10px] uppercase">
-          {expanded ? 'Hide' : 'How'}
-        </span>
-      </button>
-
-      {expanded && (
-        <div className="border-brand-primary/20 space-y-3 border-t px-4 py-3 text-xs">
-          <ol className="text-brand-muted-strong space-y-2">
-            <li>
-              <span className="text-brand-primary mr-2 font-mono">01</span>
-              Create a free dev project at{' '}
-              <a
-                href="https://dashboard.clerk.com"
-                target="_blank"
-                rel="noreferrer"
-                className="text-brand-primary link-underline"
-              >
-                dashboard.clerk.com
-              </a>
-            </li>
-            <li>
-              <span className="text-brand-primary mr-2 font-mono">02</span>
-              Enable Email + Google + GitHub providers
-            </li>
-            <li>
-              <span className="text-brand-primary mr-2 font-mono">03</span>
-              Copy the Publishable + Secret keys into{' '}
-              <code className="text-brand-text font-mono">apps/web/.env.local</code>
-            </li>
-            <li>
-              <span className="text-brand-primary mr-2 font-mono">04</span>
-              Restart <code className="text-brand-text font-mono">pnpm dev</code> — the form goes
-              live
-            </li>
-          </ol>
-          <Link
-            href="https://dashboard.clerk.com"
-            target="_blank"
-            className="text-brand-primary hover:text-brand-accent tracking-editorial-wide inline-flex items-center gap-1 font-mono text-[10px] uppercase"
-          >
-            Open Clerk dashboard
-            <ArrowUpRight className="h-3 w-3" />
-          </Link>
-        </div>
-      )}
     </div>
   );
 }
