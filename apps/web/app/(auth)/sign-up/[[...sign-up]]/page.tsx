@@ -1,6 +1,8 @@
 import Link from 'next/link';
 import { Check } from 'lucide-react';
 
+import { Logo } from '@/components/brand/logo';
+
 import { BrandPanel } from '../../_components/brand-panel';
 import { DemoAuthForm } from '../../_components/demo-auth-form';
 import { EditorialAuthForm } from '../../_components/editorial-auth-form';
@@ -76,10 +78,9 @@ export default function SignUpPage({
 
         {/* Top bar */}
         <header className="border-brand-border/60 relative z-10 flex items-center justify-between border-b px-6 py-5 lg:border-none lg:px-10 lg:py-8">
-          <Link href="/" className="flex items-center gap-2.5 lg:hidden">
-            <span className="bg-brand-primary shadow-glow h-2.5 w-2.5 rounded-full" />
-            <span className="font-display text-lg font-semibold">Nexa</span>
-          </Link>
+          <div className="lg:hidden">
+            <Logo size="md" />
+          </div>
           <div className="hidden lg:block">
             <div className="editorial-marker">
               <span className="text-brand-primary">§</span>

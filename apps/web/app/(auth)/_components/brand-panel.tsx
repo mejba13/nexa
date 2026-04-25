@@ -1,5 +1,6 @@
-import Link from 'next/link';
 import { Compass, Music, PenTool, TrendingUp } from 'lucide-react';
+
+import { Logo } from '@/components/brand/logo';
 
 interface BrandPanelProps {
   eyebrow: string;
@@ -49,16 +50,7 @@ export function BrandPanel({
 
       {/* Top rail */}
       <div className="relative z-10 flex items-start justify-between">
-        <Link href="/" className="group flex items-center gap-2.5">
-          <span className="relative inline-flex">
-            <span className="bg-brand-primary shadow-glow h-2.5 w-2.5 rounded-full" />
-            <span className="bg-brand-primary absolute inset-0 h-2.5 w-2.5 animate-ping rounded-full opacity-40" />
-          </span>
-          <span className="font-display text-lg font-semibold tracking-tight">Nexa</span>
-          <span className="tracking-editorial-wide text-brand-muted font-mono text-[10px] uppercase">
-            · v0.1
-          </span>
-        </Link>
+        <Logo size="lg" suffix="v0.1" />
         <div className="editorial-marker">
           <span className="text-brand-primary">§</span>
           <span>{eyebrow}</span>

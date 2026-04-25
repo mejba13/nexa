@@ -1,3 +1,5 @@
+import { Logo } from '@/components/brand/logo';
+
 import { CallbackClient } from './_components/callback-client';
 
 export const dynamic = 'force-dynamic';
@@ -10,9 +12,8 @@ export default function SSOCallbackPage() {
   return (
     <div className="bg-brand-bg text-brand-text flex min-h-screen items-center justify-center px-6">
       <div className="text-center">
-        <div className="relative mx-auto mb-6 inline-flex">
-          <span className="bg-brand-primary shadow-glow h-2.5 w-2.5 rounded-full" />
-          <span className="bg-brand-primary absolute inset-0 h-2.5 w-2.5 animate-ping rounded-full opacity-40" />
+        <div className="mb-8 inline-flex">
+          <Logo size="lg" asLink={false} />
         </div>
         <p className="tracking-editorial-wide text-brand-muted-strong font-mono text-[10px] uppercase">
           Completing handshake…

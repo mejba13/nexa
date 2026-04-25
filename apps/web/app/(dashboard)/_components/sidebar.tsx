@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import { UserButton } from '@clerk/nextjs';
 import { Compass, LayoutDashboard, Music, PenTool, Settings, TrendingUp } from 'lucide-react';
 
+import { Logo } from '@/components/brand/logo';
 import { cn } from '@/lib/utils';
 
 const NAV = [
@@ -25,12 +26,8 @@ export function DashboardSidebar({ clerkReady }: { clerkReady: boolean }) {
 
   return (
     <aside className="border-brand-border/60 bg-brand-surface/60 sticky top-0 hidden h-screen w-64 shrink-0 border-r backdrop-blur md:flex md:flex-col">
-      <Link href="/dashboard" className="group flex items-center gap-2.5 px-6 pb-8 pt-7">
-        <span className="relative inline-flex">
-          <span className="bg-brand-primary shadow-glow h-2.5 w-2.5 rounded-full" />
-          <span className="bg-brand-primary absolute inset-0 h-2.5 w-2.5 animate-ping rounded-full opacity-30" />
-        </span>
-        <span className="font-display text-lg font-semibold tracking-tight">Nexa</span>
+      <Link href="/dashboard" aria-label="Nexa — dashboard" className="px-6 pb-8 pt-7">
+        <Logo size="md" asLink={false} />
       </Link>
 
       <div className="px-6">

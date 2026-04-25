@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
+import { Logo } from '@/components/brand/logo';
 import { Button } from '@/components/ui/button';
 import { cn } from '@/lib/utils';
 
@@ -35,16 +36,7 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
         )}
       >
         <div className="mx-auto flex h-16 max-w-[1400px] items-center justify-between px-6">
-          <Link href="/" className="group flex items-center gap-2.5">
-            <span className="relative inline-flex">
-              <span className="bg-brand-primary shadow-glow h-2.5 w-2.5 rounded-full" />
-              <span className="bg-brand-primary absolute inset-0 h-2.5 w-2.5 animate-ping rounded-full opacity-40" />
-            </span>
-            <span className="font-display text-lg font-semibold tracking-tight">Nexa</span>
-            <span className="tracking-editorial-wide text-brand-muted hidden font-mono text-[10px] uppercase md:inline">
-              · v0.1
-            </span>
-          </Link>
+          <Logo size="md" suffix="v0.1" />
 
           <nav className="hidden items-center gap-8 md:flex">
             {NAV.map((n) => {
@@ -83,10 +75,7 @@ export default function MarketingLayout({ children }: { children: React.ReactNod
       <footer className="border-brand-border/60 bg-brand-surface/30 border-t">
         <div className="mx-auto grid max-w-[1400px] grid-cols-12 gap-6 px-6 py-14">
           <div className="col-span-12 md:col-span-5">
-            <Link href="/" className="flex items-center gap-2">
-              <span className="bg-brand-primary shadow-glow h-2 w-2 rounded-full" />
-              <span className="font-display text-base font-semibold">Nexa</span>
-            </Link>
+            <Logo size="md" />
             <p className="text-brand-muted-strong mt-4 max-w-sm text-sm">
               One platform for four specialized AI agents. Grounded in your data. Isolated by
               design. Built on Claude.
