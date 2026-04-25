@@ -22,11 +22,16 @@ export interface AuthenticatedUser {
 /**
  * Validates Clerk JWTs via `authenticateRequest`. Public routes opt out with @Public().
  * Admin gating is handled separately (check `user.role === 'admin'` via publicMetadata).
+ *
+ * Dev bypass: when `DEV_AUTH=1` and NODE_ENV !== 'production', every request
+ * authenticates as the seed admin (`user_seed_mejba`) so localhost development
+ * works without a Clerk project. Loud warning at boot.
  */
 @Injectable()
 export class ClerkAuthGuard implements CanActivate {
   private readonly logger = new Logger(ClerkAuthGuard.name);
   private readonly clerk: ClerkClient;
+  private readonly devAuth: boolean;
 
   constructor(
     private readonly reflector: Reflector,
@@ -35,6 +40,15 @@ export class ClerkAuthGuard implements CanActivate {
     this.clerk = createClerkClient({
       secretKey: config.get('CLERK_SECRET_KEY', { infer: true }),
     });
+    this.devAuth =
+      config.get('DEV_AUTH', { infer: true }) === '1' &&
+      config.get('NODE_ENV', { infer: true }) !== 'production';
+    if (this.devAuth) {
+      this.logger.warn(
+        '⚠️  DEV_AUTH=1 — every request authenticates as user_seed_mejba (admin). ' +
+          'NEVER enable in production.',
+      );
+    }
   }
 
   async canActivate(ctx: ExecutionContext): Promise<boolean> {
@@ -45,6 +59,15 @@ export class ClerkAuthGuard implements CanActivate {
     if (isPublic) return true;
 
     const req = ctx.switchToHttp().getRequest<Request>();
+
+    if (this.devAuth) {
+      (req as unknown as { user: AuthenticatedUser }).user = {
+        clerkId: 'user_seed_mejba',
+        sessionId: 'dev-session',
+        role: 'admin',
+      };
+      return true;
+    }
 
     try {
       const requestState = await this.clerk.authenticateRequest(req, {

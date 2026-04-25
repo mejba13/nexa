@@ -1,6 +1,6 @@
 'use client';
 
-import { useAuth } from '@clerk/nextjs';
+import { useNexaAuth } from '@/lib/hooks/use-nexa-auth';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { Check, ExternalLink } from 'lucide-react';
 
@@ -16,7 +16,7 @@ const FEATURE_NOTES: Record<PlanRow['plan'], string[]> = {
 };
 
 export default function BillingPage() {
-  const { getToken } = useAuth();
+  const { getToken } = useNexaAuth();
 
   const { data: plans } = useQuery({
     queryKey: ['billing', 'plans'],

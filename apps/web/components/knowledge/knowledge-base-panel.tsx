@@ -1,6 +1,6 @@
 'use client';
 
-import { useAuth } from '@clerk/nextjs';
+import { useNexaAuth } from '@/lib/hooks/use-nexa-auth';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { FileText, Trash2, Upload } from 'lucide-react';
 import { useRef } from 'react';
@@ -32,7 +32,7 @@ export function KnowledgeBasePanel({
   emptyHint = 'Upload documents to train the agent.',
   accept = '.pdf,.docx,.txt,.md,.csv',
 }: KnowledgeBasePanelProps) {
-  const { getToken } = useAuth();
+  const { getToken } = useNexaAuth();
   const qc = useQueryClient();
   const fileInput = useRef<HTMLInputElement>(null);
 

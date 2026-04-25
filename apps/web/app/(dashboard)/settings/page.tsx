@@ -1,13 +1,12 @@
 'use client';
 
-import { useAuth, useUser } from '@clerk/nextjs';
 import { Check, ExternalLink } from 'lucide-react';
 
 import { Button } from '@/components/ui/button';
+import { useNexaAuth } from '@/lib/hooks/use-nexa-auth';
 
 export default function SettingsPage() {
-  const { user } = useUser();
-  const { signOut } = useAuth();
+  const { user, userId, signOut } = useNexaAuth();
 
   return (
     <div className="mx-auto max-w-4xl px-8 py-12">
@@ -39,23 +38,13 @@ export default function SettingsPage() {
             <dt className="tracking-editorial-wide text-brand-muted font-mono text-[10px] uppercase">
               Email
             </dt>
-            <dd className="text-brand-text mt-1 font-mono text-xs">
-              {user?.primaryEmailAddress?.emailAddress ?? '—'}
-            </dd>
-          </div>
-          <div>
-            <dt className="tracking-editorial-wide text-brand-muted font-mono text-[10px] uppercase">
-              Member since
-            </dt>
-            <dd className="text-brand-text mt-1">
-              {user?.createdAt ? new Date(user.createdAt).toLocaleDateString() : '—'}
-            </dd>
+            <dd className="text-brand-text mt-1 font-mono text-xs">{user?.email ?? '—'}</dd>
           </div>
           <div>
             <dt className="tracking-editorial-wide text-brand-muted font-mono text-[10px] uppercase">
               Clerk user id
             </dt>
-            <dd className="text-brand-muted mt-1 truncate font-mono text-xs">{user?.id ?? '—'}</dd>
+            <dd className="text-brand-muted mt-1 truncate font-mono text-xs">{userId ?? '—'}</dd>
           </div>
         </dl>
         <p className="text-brand-muted mt-6 text-xs">

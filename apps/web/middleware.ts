@@ -19,6 +19,7 @@ const isPublicRoute = createRouteMatcher([
  */
 const publishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ?? '';
 const clerkReady = /^pk_(test|live)_[A-Za-z0-9]{16,}$/.test(publishableKey);
+const devAuth = process.env.NEXT_PUBLIC_DEV_AUTH === '1' && process.env.NODE_ENV !== 'production';
 
 const clerkGate = clerkMiddleware((auth, req) => {
   if (!isPublicRoute(req)) auth().protect();
@@ -31,7 +32,12 @@ function fallbackGate(req: NextRequest) {
   return NextResponse.redirect(signIn);
 }
 
-export default clerkReady ? clerkGate : fallbackGate;
+function devOpenGate(_req: NextRequest) {
+  // DEV_AUTH=1 — every route reachable, the API impersonates the seed admin.
+  return NextResponse.next();
+}
+
+export default devAuth ? devOpenGate : clerkReady ? clerkGate : fallbackGate;
 
 export const config = {
   matcher: [

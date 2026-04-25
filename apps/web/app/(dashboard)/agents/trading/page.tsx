@@ -1,6 +1,5 @@
 'use client';
 
-import { useAuth, useUser } from '@clerk/nextjs';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Play, Upload } from 'lucide-react';
 import { useEffect, useRef, useState } from 'react';
@@ -8,6 +7,7 @@ import { useEffect, useRef, useState } from 'react';
 import { StrategyList } from '@/components/trading/strategy-list';
 import { BacktestSummary } from '@/components/trading/backtest-summary';
 import { Button } from '@/components/ui/button';
+import { useNexaAuth } from '@/lib/hooks/use-nexa-auth';
 import { tradingApi } from '@/lib/trading';
 import type { BacktestResult } from '@/lib/trading-types';
 
@@ -20,8 +20,7 @@ import type { BacktestResult } from '@/lib/trading-types';
  * On mobile, everything stacks.
  */
 export default function TradingWorkspace() {
-  const { getToken } = useAuth();
-  const { user } = useUser();
+  const { getToken, user } = useNexaAuth();
   const qc = useQueryClient();
   const [selectedStrategyId, setSelectedStrategyId] = useState<string | undefined>();
   const [initialCapital, setInitialCapital] = useState(10_000);

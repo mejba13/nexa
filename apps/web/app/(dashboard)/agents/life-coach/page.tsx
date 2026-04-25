@@ -1,4 +1,4 @@
-import { auth } from '@clerk/nextjs/server';
+import { getAuthAware } from '@/lib/auth-server';
 import { redirect } from 'next/navigation';
 
 import type { Conversation } from '@nexa/types';
@@ -41,7 +41,7 @@ export default async function LifeCoachWorkspace({
 }: {
   searchParams: { conv?: string };
 }) {
-  const { getToken } = auth();
+  const { getToken } = await getAuthAware();
   const token = await getToken();
   if (!token) redirect('/sign-in');
 

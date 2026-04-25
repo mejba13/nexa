@@ -15,6 +15,12 @@ export const envValidationSchema = z.object({
   CLERK_WEBHOOK_SECRET: z.string().min(1),
   /** Comma-separated email allowlist auto-promoted to admin on first Clerk sync. */
   ADMIN_EMAILS: z.string().default(''),
+  /**
+   * Dev-only bypass — when '1', ClerkAuthGuard accepts every request as
+   * the seed admin (clerkId=user_seed_mejba, role=admin). NEVER set this
+   * in production. Companion to NEXT_PUBLIC_DEV_AUTH on the web side.
+   */
+  DEV_AUTH: z.enum(['0', '1']).default('0'),
 
   ANTHROPIC_API_KEY: z.string().min(1),
   OPENAI_API_KEY: z.string().min(1),

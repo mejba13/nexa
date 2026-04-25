@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { auth, currentUser } from '@clerk/nextjs/server';
 import {
   ArrowUpRight,
   Compass,
@@ -11,6 +10,7 @@ import {
 } from 'lucide-react';
 
 import { api, ApiError } from '@/lib/api';
+import { getAuthAware, getCurrentUserAware } from '@/lib/auth-server';
 
 export const dynamic = 'force-dynamic';
 
@@ -103,8 +103,8 @@ const AGENT_NAME: Record<ConversationListItem['agentType'], string> = {
 };
 
 export default async function DashboardPage() {
-  const [{ getToken }, user] = await Promise.all([auth(), currentUser()]);
-  const token = (await getToken().catch(() => null)) ?? null;
+  const [authState, user] = await Promise.all([getAuthAware(), getCurrentUserAware()]);
+  const token = (await authState.getToken().catch(() => null)) ?? null;
   const first = user?.firstName ?? 'there';
 
   const [usage, conversations] = await Promise.all([

@@ -1,4 +1,4 @@
-import { auth } from '@clerk/nextjs/server';
+import { getAuthAware } from '@/lib/auth-server';
 import { notFound, redirect } from 'next/navigation';
 
 import { AGENT_METADATA, AGENT_SLUG_TO_TYPE, type Conversation } from '@nexa/types';
@@ -38,7 +38,7 @@ export default async function AgentWorkspacePage({ params, searchParams }: Props
   if (!agentType) notFound();
   const meta = AGENT_METADATA[agentType];
 
-  const { getToken } = auth();
+  const { getToken } = await getAuthAware();
   const token = await getToken();
   if (!token) redirect('/sign-in');
 

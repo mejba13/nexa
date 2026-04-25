@@ -1,6 +1,6 @@
 'use client';
 
-import { useAuth } from '@clerk/nextjs';
+import { useNexaAuth } from '@/lib/hooks/use-nexa-auth';
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 
@@ -19,7 +19,7 @@ function StatCard({ label, value, sub }: { label: string; value: string; sub?: s
 }
 
 export default function AdminPage() {
-  const { getToken } = useAuth();
+  const { getToken } = useNexaAuth();
   const [search, setSearch] = useState('');
 
   const { data: stats } = useQuery({

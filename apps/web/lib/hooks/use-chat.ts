@@ -1,6 +1,6 @@
 'use client';
 
-import { useAuth } from '@clerk/nextjs';
+import { useNexaAuth } from '@/lib/hooks/use-nexa-auth';
 import { useCallback, useRef, useState } from 'react';
 
 import type { Message, StreamEvent, ToolCall } from '@nexa/types';
@@ -24,7 +24,7 @@ const API = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001/api/v1';
  * typed StreamEvent frames (see @nexa/types).
  */
 export function useChat({ conversationId, initialMessages = [] }: UseChatOptions) {
-  const { getToken } = useAuth();
+  const { getToken } = useNexaAuth();
   const [messages, setMessages] = useState<LocalMessage[]>(initialMessages);
   const [isStreaming, setIsStreaming] = useState(false);
   const [error, setError] = useState<string | null>(null);
