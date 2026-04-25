@@ -1,26 +1,21 @@
-import Link from 'next/link';
+import { DashboardSidebar } from '../(dashboard)/_components/sidebar';
 
-import { Button } from '@/components/ui/button';
+const publishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ?? '';
+const clerkReady = /^pk_(test|live)_[A-Za-z0-9]{16,}$/.test(publishableKey);
 
 // Admin pages make live API calls + depend on signed-in role — can't prerender.
 export const dynamic = 'force-dynamic';
 
+/**
+ * Admin layout reuses the dashboard sidebar so /admin sits inside the same
+ * navigation shell as the rest of the app — no context switch when an
+ * operator jumps between user-mode and admin-mode. Passing `isAdmin`
+ * surfaces the Admin entry in the sidebar's account section.
+ */
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="bg-brand-bg text-brand-text flex min-h-screen flex-col">
-      <header className="border-brand-border/60 bg-brand-surface border-b px-6 py-4">
-        <div className="mx-auto flex max-w-7xl items-center justify-between">
-          <Link href="/admin" className="flex items-center gap-2">
-            <span className="bg-brand-primary shadow-glow h-2.5 w-2.5 rounded-full" />
-            <span className="font-display text-lg font-semibold">
-              Nexa <span className="text-brand-muted">Admin</span>
-            </span>
-          </Link>
-          <Button asChild size="sm" variant="outline">
-            <Link href="/dashboard">Back to app</Link>
-          </Button>
-        </div>
-      </header>
+    <div className="bg-brand-bg text-brand-text flex min-h-screen">
+      <DashboardSidebar clerkReady={clerkReady} isAdmin />
       <main className="flex-1">{children}</main>
     </div>
   );

@@ -1,10 +1,10 @@
 'use client';
 
-import { useNexaAuth } from '@/lib/hooks/use-nexa-auth';
 import { useCallback, useRef, useState } from 'react';
 
 import type { Message, StreamEvent, ToolCall } from '@nexa/types';
 
+import { useNexaAuth } from '@/lib/hooks/use-nexa-auth';
 import { streamSSE } from '@/lib/sse';
 
 type LocalMessage = Message & {
