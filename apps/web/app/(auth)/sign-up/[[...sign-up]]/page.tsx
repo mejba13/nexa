@@ -1,10 +1,9 @@
 import Link from 'next/link';
-import { SignUp } from '@clerk/nextjs';
 import { Check } from 'lucide-react';
 
-import { AuthPlaceholder } from '../../_components/auth-placeholder';
 import { BrandPanel } from '../../_components/brand-panel';
-import { authAppearance } from '../../_components/clerk-appearance';
+import { DemoAuthForm } from '../../_components/demo-auth-form';
+import { EditorialAuthForm } from '../../_components/editorial-auth-form';
 
 const publishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ?? '';
 const clerkReady = /^pk_(test|live)_[A-Za-z0-9]{16,}$/.test(publishableKey);
@@ -101,36 +100,21 @@ export default function SignUpPage({
         {/* Form body */}
         <main className="relative z-10 flex flex-1 items-center justify-center px-6 py-10 lg:px-10">
           <div className="w-full max-w-md">
+            {plan && plan !== 'FREE' && (
+              <div className="border-brand-primary/30 bg-brand-primary/10 mb-6 inline-flex items-center gap-2 rounded-full border px-3 py-1">
+                <span className="bg-brand-primary h-1.5 w-1.5 rounded-full" />
+                <span className="tracking-editorial-wide text-brand-primary font-mono text-[10px] uppercase">
+                  Upgrading to {plan} after sign-up
+                </span>
+              </div>
+            )}
             {clerkReady ? (
-              <>
-                <div className="mb-8">
-                  <h2 className="font-display text-brand-text text-3xl font-bold">
-                    Create your account.
-                  </h2>
-                  <p className="text-brand-muted-strong mt-2 text-sm">
-                    100k tokens free every month. No card. Cancel any time from the customer portal.
-                  </p>
-                  {plan && plan !== 'FREE' && (
-                    <div className="border-brand-primary/30 bg-brand-primary/10 mt-4 inline-flex items-center gap-2 rounded-full border px-3 py-1">
-                      <span className="bg-brand-primary h-1.5 w-1.5 rounded-full" />
-                      <span className="tracking-editorial-wide text-brand-primary font-mono text-[10px] uppercase">
-                        Upgrading to {plan} after sign-up
-                      </span>
-                    </div>
-                  )}
-                </div>
-                <SignUp
-                  appearance={authAppearance}
-                  signInUrl="/sign-in"
-                  forceRedirectUrl={plan ? `/billing?plan=${plan}` : '/dashboard'}
-                />
-              </>
-            ) : (
-              <AuthPlaceholder
-                title="Finish the Clerk setup to sign up."
-                description="Clerk handles sign-up, sign-in, sessions, and social providers. Two env keys and the form renders here."
-                redirected={redirected}
+              <EditorialAuthForm
+                mode="sign-up"
+                redirectTo={plan ? `/billing?plan=${plan}` : '/dashboard'}
               />
+            ) : (
+              <DemoAuthForm mode="sign-up" redirected={redirected} />
             )}
 
             {/* Perks row on mobile only — desktop has the BrandPanel footer */}

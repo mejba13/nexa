@@ -1,10 +1,9 @@
 import Link from 'next/link';
-import { SignIn } from '@clerk/nextjs';
 import { Sparkles } from 'lucide-react';
 
-import { AuthPlaceholder } from '../../_components/auth-placeholder';
 import { BrandPanel } from '../../_components/brand-panel';
-import { authAppearance } from '../../_components/clerk-appearance';
+import { DemoAuthForm } from '../../_components/demo-auth-form';
+import { EditorialAuthForm } from '../../_components/editorial-auth-form';
 
 const publishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY ?? '';
 const clerkReady = /^pk_(test|live)_[A-Za-z0-9]{16,}$/.test(publishableKey);
@@ -80,27 +79,9 @@ export default function SignInPage({
         <main className="relative z-10 flex flex-1 items-center justify-center px-6 py-10 lg:px-10">
           <div className="w-full max-w-md">
             {clerkReady ? (
-              <>
-                <div className="mb-8">
-                  <h2 className="font-display text-brand-text text-3xl font-bold">
-                    Sign in to Nexa.
-                  </h2>
-                  <p className="text-brand-muted-strong mt-2 text-sm">
-                    Continue where you left off. Your agents and memory remain intact.
-                  </p>
-                </div>
-                <SignIn
-                  appearance={authAppearance}
-                  signUpUrl="/sign-up"
-                  forceRedirectUrl="/dashboard"
-                />
-              </>
+              <EditorialAuthForm mode="sign-in" />
             ) : (
-              <AuthPlaceholder
-                title="Finish the Clerk setup to sign in."
-                description="Clerk handles sign-up, sign-in, sessions, and social providers. Two env keys and the form renders here."
-                redirected={redirected}
-              />
+              <DemoAuthForm mode="sign-in" redirected={redirected} />
             )}
           </div>
         </main>
